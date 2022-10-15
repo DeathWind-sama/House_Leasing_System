@@ -14,6 +14,7 @@ public abstract class People {
 
 
     //get
+
     public String getName(){
         return name;
     }

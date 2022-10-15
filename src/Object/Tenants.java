@@ -9,4 +9,16 @@ public class Tenants extends People{
         this.birthday=birthday;
         this.gender=gender;
     }
+
+
+
+    //get
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public GenderEnum getGender() {
+        return gender;
+    }
 }
