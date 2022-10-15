@@ -3,8 +3,8 @@ package Object;
 public abstract class People {
     private String name;
     private String ID;
-    private String address="Not Registered";
-    private String telNumber="Not Registered";
+    private String address;
+    private String telNumber;
 
     public People(String name,String ID,String address,String telNumber){
         this.name=name;
