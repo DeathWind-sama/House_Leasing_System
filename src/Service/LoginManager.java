@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 /**
- * 登录、注册的工具类
+ * 管理登录、注册的类，登录完成后可销毁
  */
 public class LoginManager {
     //使无法new对象，并要求避开意外的实例化
@@ -15,16 +15,16 @@ public class LoginManager {
         throw new AssertionError();
     }
 
-    public static boolean login(String ID,String psw){
+    public boolean login(String ID,String psw){
         //待开发----------
         return true;
     }
 
-    public static void register(){
+    public void register(){
         //待开发----------
     }
 
-    private static String encrypt(String originalCode){
+    private String encrypt(String originalCode){
         try{
             MessageDigest md=MessageDigest.getInstance("sha-1");
             md.update(originalCode.getBytes());
