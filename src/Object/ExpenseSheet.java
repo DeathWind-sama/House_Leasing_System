@@ -4,13 +4,15 @@ public class ExpenseSheet {
     private String sheetID;
     private String payerID;
     private String payerName;
+    private boolean isHomeowner;
     private double payAmount;
     private boolean isPayed;
 
-    public ExpenseSheet(String sheetID,String payerID,String payerName,double payAmount,boolean isPayed){
+    public ExpenseSheet(String sheetID,String payerID,String payerName,boolean isHomeowner,double payAmount,boolean isPayed){
         this.sheetID=sheetID;
         this.payerID=payerID;
         this.payerName=payerName;
+        this.isHomeowner =isHomeowner;
         this.payAmount=payAmount;
         this.isPayed=isPayed;
     }
@@ -29,6 +31,10 @@ public class ExpenseSheet {
 
     public String getPayerName() {
         return payerName;
+    }
+
+    public boolean getIsHomeOwner(){
+        return isHomeowner;
     }
 
     public double getPayAmount() {
