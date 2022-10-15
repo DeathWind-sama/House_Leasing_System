@@ -21,6 +21,10 @@ public abstract class People {
         return name;
     }
 
+    public String getID() {
+        return ID;
+    }
+
     public String getAddress() {
         return address;
     }
