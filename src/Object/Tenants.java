@@ -4,8 +4,8 @@ public class Tenants extends People{
     private String birthday;
     private GenderEnum gender;
 
-    public Tenants(String name,String address,String telNumber,String birthday,GenderEnum gender){
-        super(name,address,telNumber);
+    public Tenants(String name,String ID,String address,String telNumber,String birthday,GenderEnum gender){
+        super(name,ID,address,telNumber);
         this.birthday=birthday;
         this.gender=gender;
     }

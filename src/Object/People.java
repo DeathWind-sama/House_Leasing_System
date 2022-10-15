@@ -2,11 +2,13 @@ package Object;
 
 public abstract class People {
     private String name;
-    private String address;
-    private String telNumber;
+    private String ID;
+    private String address="Not Registered";
+    private String telNumber="Not Registered";
 
-    public People(String name,String address,String telNumber){
+    public People(String name,String ID,String address,String telNumber){
         this.name=name;
+        this.ID=ID;
         this.address=address;
         this.telNumber=telNumber;
     }
