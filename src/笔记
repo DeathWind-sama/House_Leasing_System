@@ -1,0 +1,13 @@
+ArrayList线程不安全。vector线程安全但极慢。可使用Collections.synchronizedList。
+    List<String> list = Collections.synchronizedList(new ArrayList<String>());
+    list.add("1");
+    list.add("2");
+    list.add("3");
+    //遍历须在synchronized代码块中。如果list被add完了之后不再被修改，则应该不需要加synchronized
+    synchronized (list) {
+        Iterator i = list.iterator(); // Must be in synchronized block
+        while (i.hasNext()) {
+            //foo(i.next());
+            System.out.println(i.next());
+        }
+    }
