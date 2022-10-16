@@ -26,11 +26,6 @@ public class House {//地址、房型（如平房、带阳台的楼房、独立�
         this.monthlyRent=monthlyRent;
     }
 
-    public static String getNewHouseID(){
-        //待开发-------------
-        return "";
-    }
-
 
 
     //get
