@@ -1,6 +1,8 @@
 package Service;
 
-//import java.security.MessageDigest;
+import Object.*;
+import Object.Enums.GenderEnum;
+import Tools.CallbackClass;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,17 +13,25 @@ import java.util.Base64;
  */
 public class LoginManager {
     //使无法new对象，并要求避开意外的实例化
-    private LoginManager(){
-        throw new AssertionError();
+//    private LoginManager(){
+//        throw new AssertionError();
+//    }
+
+    public void login(String ID,String psw){
+        new Thread(()->{
+            ServiceMainLogic.serviceToDaoInterface.matchUserToLogin(ID,psw, this::checkLoginSuccess);
+        });
     }
 
-    public boolean login(String ID,String psw){
-        //待开发----------
-        return true;
+    public void register(People people){
+        if(people instanceof Homeowner){
+
+        }
     }
 
-    public void register(){
-        //待开发----------
+    //call back
+    public void checkLoginSuccess() {
+        System.out.println("checkLoginSuccess");
     }
 
     private String encrypt(String originalCode){

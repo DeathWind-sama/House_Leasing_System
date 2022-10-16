@@ -1,6 +1,7 @@
 package Object;
 
 import Object.Enums.GenderEnum;
+import Tools.CallbackClass;
 
 public class Tenant extends People{
     private String birthday;
