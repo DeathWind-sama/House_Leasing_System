@@ -1,8 +1,5 @@
 package Tools;
-
-import Object.Enums.GenderEnum;
-import Service.LoginManager;
-
+//unused
 public interface CallbackClass {
     public void doCallback();
 }

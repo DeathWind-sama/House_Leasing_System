@@ -1,13 +1,12 @@
 package Service;
 
-import Dao.ServiceToDaoInterface;
 import Object.*;
-import Object.Enums.GenderEnum;
-import Tools.CallbackClass;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 管理登录、注册的类，登录完成后可销毁
@@ -28,15 +27,15 @@ public class LoginManager {
         //使用异步以把主进程留给其他请求
         new Thread(() -> {
             try {
-                boolean[] isSuccess = new boolean[1];
+                AtomicBoolean isSuccess = new AtomicBoolean(false);
                 //创建新进程以插队运行等待请求回复
                 Thread thread = new Thread(() -> {
                     //请求数据库进行匹配
-                    ServiceMainLogic.serviceToDaoInterface.matchUserToLogin(ID, psw, isSuccess);
+                    isSuccess.set(ServiceMainLogic.serviceToDaoInterface.matchUserToLogin(ID, psw));
                 });
                 thread.start();
                 thread.join();//匹配过程中阻塞当前进程
-                checkLoginSuccess(isSuccess[0]);//登录操作完成，根据是否成功进行分支
+                checkLoginSuccess(isSuccess.get());//登录操作完成，根据是否成功进行分支
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -49,8 +48,7 @@ public class LoginManager {
         }
     }
 
-    //call back
-    public void checkLoginSuccess(boolean isSuccess) {
+    private void checkLoginSuccess(boolean isSuccess) {
         if(isSuccess) {
             System.out.println("Login Success");
         }else{
