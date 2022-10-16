@@ -1,5 +1,6 @@
 package Service;
 
+import Dao.ServiceToDaoInterface;
 import Object.*;
 import Object.Enums.GenderEnum;
 import Tools.CallbackClass;
@@ -17,10 +18,29 @@ public class LoginManager {
 //        throw new AssertionError();
 //    }
 
-    public void login(String ID,String psw){
-        new Thread(()->{
-            ServiceMainLogic.serviceToDaoInterface.matchUserToLogin(ID,psw, this::checkLoginSuccess);
-        });
+    public static void main(String[] args) {
+        LoginManager l=new LoginManager();
+        l.login("abc","123");
+    }
+
+    public void login(String ID,String psw) {
+        System.out.println("Login...");
+        //使用异步以把主进程留给其他请求
+        new Thread(() -> {
+            try {
+                boolean[] isSuccess = new boolean[1];
+                //创建新进程以插队运行等待请求回复
+                Thread thread = new Thread(() -> {
+                    //请求数据库进行匹配
+                    ServiceMainLogic.serviceToDaoInterface.matchUserToLogin(ID, psw, isSuccess);
+                });
+                thread.start();
+                thread.join();//匹配过程中阻塞当前进程
+                checkLoginSuccess(isSuccess[0]);//登录操作完成，根据是否成功进行分支
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public void register(People people){
@@ -30,8 +50,12 @@ public class LoginManager {
     }
 
     //call back
-    public void checkLoginSuccess() {
-        System.out.println("checkLoginSuccess");
+    public void checkLoginSuccess(boolean isSuccess) {
+        if(isSuccess) {
+            System.out.println("Login Success");
+        }else{
+            System.out.println("Login Failed");
+        }
     }
 
     private String encrypt(String originalCode){

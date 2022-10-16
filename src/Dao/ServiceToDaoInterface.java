@@ -5,8 +5,18 @@ import Tools.CallbackClass;
 
 public interface ServiceToDaoInterface {
     //login
-    boolean matchUserToLogin(String ID, String psw, CallbackClass checkLoginSuccess);//查看是否有该用户已被登记，若已被登记则返回true，否则返回false
+    public void matchUserToLogin(String ID, String psw, boolean[] isSuccess);//查看是否有该用户已被登记，若已被登记则另isSuccess[0]=true
+//    {
+//        System.out.println("match");
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        isSuccess[0]=true;
+//
+//    }
     //register
-    boolean registerHomeowner(Homeowner homeowner);
-    boolean registerTenant(Tenant tenant);
+    public boolean registerHomeowner(Homeowner homeowner);
+    public boolean registerTenant(Tenant tenant);
 }
