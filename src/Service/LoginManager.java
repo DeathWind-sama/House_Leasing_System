@@ -4,10 +4,8 @@ import Object.*;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 管理登录、注册的类，登录完成后可销毁
@@ -29,12 +27,10 @@ public class LoginManager {
         new Thread(() -> {
             try {
                 AtomicBoolean isSuccess = new AtomicBoolean(false);
-//                ArrayList<Homeowner> a=new ArrayList<Homeowner>();
                 //创建新进程以插队运行等待请求回复
                 Thread thread = new Thread(() -> {
                     //请求数据库进行匹配
                     isSuccess.set(ServiceMainLogic.serviceToDaoInterface.matchUserToLogin(ID, psw));
-//                    ServiceMainLogic.serviceToDaoInterface.getAllHomeowner(a);
                 });
                 thread.start();
                 thread.join();//匹配过程中阻塞当前进程
