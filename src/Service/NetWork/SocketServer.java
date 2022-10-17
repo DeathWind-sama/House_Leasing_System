@@ -1,4 +1,4 @@
-package Socket;
+package Service.NetWork;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -21,14 +21,14 @@ public class SocketServer {
                     //获取socket客户端发送进来的消息
                     BufferedReader br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
                     String msg = br.readLine();
-                    br.close();
-
-                    System.out.println("接收到： "+msg);
+//                    br.close();
                     clientSocket.shutdownInput();
+                    System.out.println("接收到： "+msg);
 
-                    //返回消息给socket客户端
+                    //返回消息给socket客户端（客户端通过阻塞来等待回复）
+                    String msgToReturn=getMsgToReturn(msg);
                     PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
-                    writer.println(clientSocket.getPort() + " 服务器返回： " + msg);
+                    writer.println(msgToReturn);
                     writer.flush();
                     writer.close();
                 } catch (IOException e) {
@@ -37,6 +37,12 @@ public class SocketServer {
             };
             executorService.submit(runnable);
         }
+    }
+
+    private static String getMsgToReturn(String msg){
+        String msgToReturn=MessageTranslator.handleMsg(msg);
+        //处理结果使其符合传输规范
+        return msgToReturn;
     }
 
     public static void main(String[] args) throws IOException {

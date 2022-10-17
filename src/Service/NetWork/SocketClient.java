@@ -1,8 +1,9 @@
-package Socket;
+package Service.NetWork;
 
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class SocketClient {
     private static Socket socket;
@@ -41,6 +42,11 @@ public class SocketClient {
 
     public static void main(String[] args) {
         String str="";
-        SocketClient.SendMsgToServer("msg from client",str);
+        String strToSend;
+        Scanner scanner=new Scanner(System.in);
+        while (scanner.hasNextLine()) {
+            strToSend = scanner.nextLine();
+            SocketClient.SendMsgToServer("LOGIN", str);
+        }
     }
 }
