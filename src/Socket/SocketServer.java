@@ -21,27 +21,13 @@ public class SocketServer {
                     //获取socket客户端发送进来的消息
                     BufferedReader br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
                     String msg = br.readLine();
-                    //输出
+
                     System.out.println("接收到： "+msg);
                     clientSocket.shutdownInput();
 
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     //返回消息给socket客户端
                     PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
                     writer.println(clientSocket.getPort() + " 服务器返回： " + msg);
-                    writer.flush();
-
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    //返回消息给socket客户端
-                    writer.println(clientSocket.getPort() + " 服务器返回2： " + msg);
                     writer.flush();
 
                     //收到此消息退出socket服务器端
