@@ -21,6 +21,7 @@ public class SocketServer {
                     //获取socket客户端发送进来的消息
                     BufferedReader br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
                     String msg = br.readLine();
+                    br.close();
 
                     System.out.println("接收到： "+msg);
                     clientSocket.shutdownInput();
@@ -29,11 +30,7 @@ public class SocketServer {
                     PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
                     writer.println(clientSocket.getPort() + " 服务器返回： " + msg);
                     writer.flush();
-
-                    //收到此消息退出socket服务器端
-                    if (msg.equals("exit")) {
-                        server.close();
-                    }
+                    writer.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
