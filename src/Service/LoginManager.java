@@ -16,11 +16,6 @@ public class LoginManager {
 //        throw new AssertionError();
 //    }
 
-    public static void main(String[] args) {
-        LoginManager l=new LoginManager();
-        l.login("abc","123");
-    }
-
     public void login(String ID,String psw) {
         System.out.println("Login...");
         //使用异步以把主进程留给其他请求

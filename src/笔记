@@ -13,3 +13,5 @@ ArrayList线程不安全。vector线程安全但极慢。可使用Collections.sy
     }
 
 Thread.currentThread()可以提供所在Thread对象，用于对 服务申请线程 的阻塞等。
+
+newSingleThreadExecutor 创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行.
