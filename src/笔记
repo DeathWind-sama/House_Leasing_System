@@ -11,3 +11,5 @@ ArrayList线程不安全。vector线程安全但极慢。可使用Collections.sy
             System.out.println(i.next());
         }
     }
+
+Thread.currentThread()可以提供所在Thread对象，用于对 服务申请线程 的阻塞等。
