@@ -20,8 +20,9 @@ public class MessageTranslator {
         try {
             request=translateMsgToRequest(analysedMsg);
         } catch (UnknownRequestException e) {
-            e.printStackTrace();
-            return "ERROR: Unknown Request: "+msg;
+            String errorStr="ERROR: Unknown Request: "+msg;
+            System.err.println(errorStr);
+            return errorStr;
         }
         return ServiceMainLogic.handleRequest(request);
     }

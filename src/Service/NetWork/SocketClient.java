@@ -46,7 +46,7 @@ public class SocketClient {
         Scanner scanner=new Scanner(System.in);
         while (scanner.hasNextLine()) {
             strToSend = scanner.nextLine();
-            SocketClient.SendMsgToServer("LOGIN", str);
+            SocketClient.SendMsgToServer(strToSend, str);
         }
     }
 }
