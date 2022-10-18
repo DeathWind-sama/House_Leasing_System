@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -33,6 +34,7 @@ public class SocketClient {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             int lineNum=Integer.parseInt(reader.readLine());//get lineNum
             //read lines
+            strReturn.clear();
             for(int i=0;i<lineNum-1;i++){
                 strReturn.add(reader.readLine());
             }
@@ -58,6 +60,27 @@ public class SocketClient {
         return true;
     }
 
+    /**
+     * Send message by String
+     * @param msg
+     * @param strReturn
+     * @return
+     */
+    public static boolean SendMsgToServer(String msg, ArrayList<String> strReturn) {
+        msg = msg.replace("\r\n", "\n").replace("\r", "\n");
+        if (!(msg.endsWith("\n"))) {
+            msg += "\n";
+        }
+        String[] msgList = msg.split("\\n");//分行
+        ArrayList<String> msgArray = new ArrayList<>(Arrays.asList(msgList));
+        return SendMsgToServer(msgArray,strReturn);
+    }
+
+    /**
+     * 把ArrayList转化成符合格式的String
+     * @param msgArray
+     * @return
+     */
     private static String transformArrayToString(ArrayList<String> msgArray){
         String msg=msgArray.size()+1+"\n";//开头记录行数
         msg+=String.join("\n",msgArray);
@@ -72,14 +95,16 @@ public class SocketClient {
         strArray.add("DeathWind");
         strArray.add("1919810");
         SocketClient.SendMsgToServer(strArray, str);
+        System.out.println("Get: "+str);
+        SocketClient.SendMsgToServer("LOGIN\nSanae\n0721", str);
+        System.out.println("Get: "+str);
+        //
         String strToSend;
         Scanner scanner=new Scanner(System.in);
         while (scanner.hasNextLine()) {
             str.clear();
             strToSend = scanner.nextLine();
-            strArray.clear();
-            strArray.add(strToSend);
-            SocketClient.SendMsgToServer(strArray, str);
+            SocketClient.SendMsgToServer(strToSend, str);
         }
     }
 }
