@@ -42,7 +42,7 @@ public class SocketClient {
             //end communication
             socket.close();
             //check end
-            System.out.println("接收到回复： " + strReturn);
+//            System.out.println("接收到回复： " + strReturn);
             if(!endStr.equals("MSG_END")){
                 System.err.println("end: "+endStr);
                 throw new SocketReceivedDataErrorException();
