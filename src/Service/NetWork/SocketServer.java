@@ -35,7 +35,7 @@ public class SocketServer {
                                 msg.add(br.readLine());
                             }
                             String endStr=br.readLine();//last line
-                            clientSocket.shutdownInput();
+//                            clientSocket.shutdownInput();
                             System.out.println("接收到： " + msg);
                             if(!endStr.equals("MSG_END")){
                                 System.err.println("end: "+endStr);

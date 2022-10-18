@@ -27,7 +27,7 @@ public class SocketClient {
             OutputStream out = socket.getOutputStream();
             String msg=transformArrayToString(msgArray);
             out.write(msg.getBytes());
-            socket.shutdownOutput();
+//            socket.shutdownOutput();
 
             //获取socket服务器端返回的消息
             InputStream inputStream = socket.getInputStream();
