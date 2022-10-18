@@ -28,13 +28,35 @@ public class SocketServer {
                         try {
                             //获取socket客户端发送进来的消息
                             BufferedReader br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
-                            String msg = br.readLine();
+                            ArrayList<String> msg=new ArrayList<>();
+                            int lineNum=Integer.parseInt(br.readLine());//get lineNum
+                            //read lines
+                            for(int i=0;i<lineNum-1;i++){
+                                msg.add(br.readLine());
+                            }
+                            String endStr=br.readLine();//last line
                             clientSocket.shutdownInput();
                             System.out.println("接收到： " + msg);
+                            if(!endStr.equals("MSG_END")){
+                                System.err.println("end: "+endStr);
+                                throw new SocketReceivedDataErrorException();
+                            }
 
                             //返回消息给socket客户端（客户端通过阻塞来等待回复）
                             String msgToReturn = getMsgToReturn(msg);
                             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
+                            writer.println(msgToReturn);
+                            writer.flush();
+                            writer.close();
+                        }catch (SocketReceivedDataErrorException e){
+                            String msgToReturn = "ERROR: Received Data Error.";
+                            System.err.println(msgToReturn);
+                            PrintWriter writer = null;
+                            try {
+                                writer = new PrintWriter(clientSocket.getOutputStream());
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
                             writer.println(msgToReturn);
                             writer.flush();
                             writer.close();
@@ -50,15 +72,14 @@ public class SocketServer {
         }).start();
     }
 
-    private static String getMsgToReturn(String msg) {
+    private static String getMsgToReturn(ArrayList<String> msg) {
         ArrayList<String> msgToReturnArray = MessageTranslator.handleMsg(msg);
         //处理msg使其符合传输格式
-        msgToReturnArray.add("MSG_END\n");//表示结束。可以标注序列号
-        System.out.println("TEST: " + msgToReturnArray);
-        StringBuilder msgToReturn = new StringBuilder(msgToReturnArray.size() + "\n");//开头一行数字表示之后总共有多少行
+        StringBuilder msgToReturn = new StringBuilder(msgToReturnArray.size()+1 + "\n");//开头一行数字表示之后总共有多少行
         for(String s:msgToReturnArray){
-            msgToReturn.append(s);
+            msgToReturn.append(s).append("\n");
         }
+        msgToReturn.append("MSG_END\n");//表示结束。可以标注序列号
         return msgToReturn.toString();
     }
 

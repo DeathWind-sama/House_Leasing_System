@@ -4,7 +4,6 @@ import Service.Enums.RequestEnum;
 import Service.ServiceMainLogic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * transform the received string to request for handling it
@@ -15,29 +14,18 @@ public class MessageTranslator {
      * @param msg the message from client
      * @return message to return to client
      */
-    public static ArrayList<String> handleMsg(String msg){
-        ArrayList<String> analysedMsg=analyseMsg(msg);
+    public static ArrayList<String> handleMsg(ArrayList<String> msg){
         RequestEnum request;
         try {
-            request=translateMsgToRequest(analysedMsg);
+            request=translateMsgToRequest(msg);
         } catch (UnknownRequestException e) {
-            String errorStr="ERROR: Unknown Request: "+msg;
+            String errorStr="ERROR: Unknown Request: "+msg.get(0);
             System.err.println(errorStr);
             ArrayList<String> es=new ArrayList<>();
-            es.add("ERROR: Unknown Request: "+analysedMsg.get(0));
+            es.add(errorStr);
             return es;
         }
-        return ServiceMainLogic.handleRequest(request);
-    }
-
-    /**
-     * transform string into ArrayList<String>
-     * @param msg msg in string
-     * @return
-     */
-    private static ArrayList<String> analyseMsg(String msg){
-        String[] analysedMsgArray=msg.split("\\n");
-        return new ArrayList<>(Arrays.asList(analysedMsgArray));
+        return ServiceMainLogic.handleRequest(request,msg);
     }
 
     private static RequestEnum translateMsgToRequest(ArrayList<String> analysedMsg) throws UnknownRequestException{
