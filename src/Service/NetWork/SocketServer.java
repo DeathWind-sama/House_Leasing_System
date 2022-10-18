@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -49,15 +51,15 @@ public class SocketServer {
     }
 
     private static String getMsgToReturn(String msg) {
-        String msgToReturn = MessageTranslator.handleMsg(msg);
-        msgToReturn="aaa\n2124231\rwewewewe\r4333zzzz";
-        if (!(msgToReturn.endsWith("\n") || msgToReturn.endsWith("\r"))) {
-            msgToReturn += "\n";
+        ArrayList<String> msgToReturnArray = MessageTranslator.handleMsg(msg);
+        //处理msg使其符合传输格式
+        msgToReturnArray.add("MSG_END\n");//表示结束。可以标注序列号
+        System.out.println("TEST: " + msgToReturnArray);
+        StringBuilder msgToReturn = new StringBuilder(msgToReturnArray.size() + "\n");//开头一行数字表示之后总共有多少行
+        for(String s:msgToReturnArray){
+            msgToReturn.append(s);
         }
-        msgToReturn+="MSG_END\n";//表示结束。可以添加序列号
-        int lineNum = msgToReturn.split("\n\r|\n|\r").length;//计算行数
-        msgToReturn = String.valueOf(lineNum) + "\n" + msgToReturn;//开头一行数字表示之后总共有多少行
-        return msgToReturn;
+        return msgToReturn.toString();
     }
 
     public static void main(String[] args) {
@@ -69,3 +71,14 @@ public class SocketServer {
         System.out.println("Server Turned On.");
     }
 }
+
+//        msgToReturn=msgToReturn.replace("\r\n","\n").replace("\r","\n");
+//        if (!(msgToReturn.endsWith("\n"))) {
+//        msgToReturn += "\n";
+//        }
+//        System.out.println("msgToReturn: "+msgToReturn);
+//        msgToReturn+="MSG_END\n";//表示结束。可以添加序列号
+//        String[] msgToReturnArray=msgToReturn.split("\\n");//分行
+//        System.out.println("TEST: " + Arrays.toString(msgToReturnArray));
+//        int lineNum = msgToReturnArray.length;//计算行数
+//        msgToReturn = String.valueOf(lineNum) + "\n" + msgToReturn;//开头一行数字表示之后总共有多少行
