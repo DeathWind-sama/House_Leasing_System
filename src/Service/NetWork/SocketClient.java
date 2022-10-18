@@ -100,6 +100,8 @@ public class SocketClient {
         System.out.println("Get: "+str);
         SocketClient.SendMsgToServer("LOGIN\nBakaDontHavePassword", str);
         System.out.println("Get: "+str);
+        SocketClient.SendMsgToServer("LOGIN\n中文测试\nhomo114514", str);
+        System.out.println("Get: "+str);
         //
         String strToSend;
         Scanner scanner=new Scanner(System.in);
