@@ -1,8 +1,4 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Objects;
@@ -44,16 +40,17 @@ public class HttpServer {
                         + "------------------------------------------------------------------");
                 String firstLineOfRequest = "";
                 String[] heads;
+                String fun="";
                 String uri="";
                 String contentType ="";
-                if(request.length() > 0){
+                if(request.length() > 1){
                     firstLineOfRequest = request.substring(0,request.indexOf("\r\n"));
                     heads = firstLineOfRequest.split(" ");
+                    fun=heads[0];
                     uri = heads[1];
                     if(Objects.equals(uri, "/") || Objects.equals(uri, "")){
                         uri = "/index.html";
                     }
-                    System.out.println("-------------uri: "+uri);
                     if(uri.contains("html")){
                         contentType = "text/html";
                     }else{
@@ -63,22 +60,39 @@ public class HttpServer {
 
                 //回复
                 OutputStream outSocket = socket.getOutputStream();
-                //将响应头发送给客户端
-                String responseFirstLine = "HTTP/1.1 200 OK\r\n";
-                String responseHead = "Content-Type:" + contentType +"\r\n";
-                System.out.println("ServerResponse:\n"+responseFirstLine+"\n"+responseHead+"\n"
-                        + "--------------------------------------------------------------------");
-                outSocket.write(responseFirstLine.getBytes());
-                outSocket.write(responseHead.getBytes());
+                switch (fun) {
+                    case "GET":
+                        String responseCode = "200 OK";
+                        //寻找文件
+                        FileInputStream fileIS = null;
+                        try {
+                            fileIS = new FileInputStream("d:/webroot" + uri);
+                        } catch (FileNotFoundException e) {
+                            responseCode = "404 Not Found";
+                        }
 
-                //通过HTTP请求中的uri读取相应文件发送给客户端
-                FileInputStream writehtml = new FileInputStream("d:/webroot"+uri);
-                outSocket.write("\r\n".getBytes());
-                byte[] htmlbuffer = new byte[writehtml.available()];
-                int len = 0;
-                System.out.println("writeHtml");
-                while((len = writehtml.read(htmlbuffer)) != -1){
-                    outSocket.write(htmlbuffer, 0,len);
+                        //响应头
+                        String responseFirstLine = "HTTP/1.1 " + responseCode + "\r\n";
+                        String responseHead = "Content-Type:" + contentType + "\r\n";
+                        System.out.println("ServerResponse:\n" + responseFirstLine + "\n" + responseHead + "\n"
+                                + "--------------------------------------------------------------------");
+                        outSocket.write(responseFirstLine.getBytes());
+                        outSocket.write(responseHead.getBytes());
+
+                        //通过HTTP请求中的uri读取相应文件发送给客户端
+                        if (!(fileIS == null)) {
+                            outSocket.write("\r\n".getBytes());
+                            byte[] fileBuffer = new byte[fileIS.available()];
+                            int len;
+                            System.out.println("writeHtml");
+                            while ((len = fileIS.read(fileBuffer)) != -1) {
+                                outSocket.write(fileBuffer, 0, len);
+                            }
+                        }
+                        break;
+                    case "POST":
+                        //handle-------------
+                        break;
                 }
                 outSocket.close();
 
