@@ -43,6 +43,7 @@ public class SocketClient {
             socket.close();
             //check end
 //            System.out.println("接收到回复： " + strReturn);
+            //end检测
             if(!endStr.equals("MSG_END")){
                 System.err.println("end: "+endStr);
                 throw new SocketReceivedDataErrorException();
@@ -51,7 +52,10 @@ public class SocketClient {
             System.err.println("ERROR: Fail To Connect.");
             return false;
         }catch (SocketReceivedDataErrorException e){
-            System.err.println("ERROR: Received Data Error.");
+            System.err.println("ERROR: Received Data End Error.");
+            return false;
+        }catch (NumberFormatException e){
+            System.err.println("ERROR: Received Data Head Error.");
             return false;
         } catch (IOException e) {
             e.printStackTrace();

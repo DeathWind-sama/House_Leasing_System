@@ -33,34 +33,32 @@ public class SocketServer {
                             //获取socket客户端发送进来的消息
                             BufferedReader br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
                             ArrayList<String> msg=new ArrayList<>();
-                            int lineNum=Integer.parseInt(br.readLine());//get lineNum
-                            //read lines
-                            for(int i=0;i<lineNum-1;i++){
-                                msg.add(br.readLine());
-                            }
-                            String endStr=br.readLine();//last line
+                            String msgToReturn;
+                            try {
+                                int lineNum = Integer.parseInt(br.readLine());//get lineNum
+                                //read lines
+                                for (int i = 0; i < lineNum - 1; i++) {
+                                    msg.add(br.readLine());
+                                }
+                                String endStr = br.readLine();//last line
 //                            clientSocket.shutdownInput();
-                            System.out.println("接收到： " + msg);
-                            if(!endStr.equals("MSG_END")){
-                                System.err.println("end: "+endStr);
-                                throw new SocketReceivedDataErrorException();
+                                System.out.println("接收到： " + msg);
+                                //ebd检测
+                                if (!endStr.equals("MSG_END")) {
+                                    System.err.println("end: " + endStr);
+                                    throw new SocketReceivedDataErrorException();
+                                }
+                                msgToReturn = getMsgToReturn(msg);//处理消息并求取返回值
+                            }catch (SocketReceivedDataErrorException e){
+                                msgToReturn = "ERROR: Received Data Error.";
+                                System.err.println(msgToReturn);
+                            }catch (NumberFormatException e){
+                                msgToReturn = "ERROR: Received Head Error.";
+                                System.err.println(msgToReturn);
                             }
 
                             //返回消息给socket客户端（客户端通过阻塞来等待回复）
-                            String msgToReturn = getMsgToReturn(msg);
                             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
-                            writer.println(msgToReturn);
-                            writer.flush();
-                            writer.close();
-                        }catch (SocketReceivedDataErrorException e){
-                            String msgToReturn = "ERROR: Received Data Error.";
-                            System.err.println(msgToReturn);
-                            PrintWriter writer = null;
-                            try {
-                                writer = new PrintWriter(clientSocket.getOutputStream());
-                            } catch (IOException ex) {
-                                ex.printStackTrace();
-                            }
                             writer.println(msgToReturn);
                             writer.flush();
                             writer.close();
