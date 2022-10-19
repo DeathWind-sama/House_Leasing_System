@@ -1,11 +1,10 @@
-package Service.NetWork;
+package NetWork;
 
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class SocketClient {

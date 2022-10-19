@@ -1,4 +1,4 @@
-package Service.NetWork;
+package NetWork;
 
 public class UnknownRequestException extends Exception {
     public UnknownRequestException(String msg){

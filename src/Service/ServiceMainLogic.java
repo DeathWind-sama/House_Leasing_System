@@ -2,7 +2,6 @@ package Service;
 
 import Dao.ServiceToDaoInterface;
 import Service.Enums.RequestEnum;
-import Service.NetWork.ReturnsTranslator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +10,7 @@ public class ServiceMainLogic {
     public static ServiceToDaoInterface serviceToDaoInterface;//接口入口，在整个项目的主逻辑里赋值
 
     public static ArrayList<String> handleRequest(RequestEnum request, List<String> msg){
+        ArrayList<String> msgToReturn=new ArrayList<>();
         try {
             switch (request) {
                 case LOGIN:
@@ -24,6 +24,8 @@ public class ServiceMainLogic {
             es.add(errorStr);
             return es;
         }
-        return ReturnsTranslator.translateReturnsToString();
+        //待开发----------
+        msgToReturn.add("a handled server message");
+        return msgToReturn;
     }
 }

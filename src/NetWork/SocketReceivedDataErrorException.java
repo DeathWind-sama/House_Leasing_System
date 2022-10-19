@@ -1,4 +1,4 @@
-package Service.NetWork;
+package NetWork;
 
 import java.io.IOException;
 

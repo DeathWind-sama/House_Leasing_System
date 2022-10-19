@@ -1,4 +1,4 @@
-package Service.NetWork;
+package NetWork;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,6 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -67,7 +66,7 @@ public class SocketServer {
                                 msgToReturn = "ERROR: Received Head Error.";
                                 System.err.println(msgToReturn);
                             }
-
+//                            msgToReturn="HTTP/1.0 200 OK";
                             //返回消息给socket客户端（客户端通过阻塞来等待回复）
                             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
                             writer.println(msgToReturn);

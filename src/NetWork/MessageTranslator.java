@@ -1,4 +1,4 @@
-package Service.NetWork;
+package NetWork;
 
 import Service.Enums.RequestEnum;
 import Service.ServiceMainLogic;
