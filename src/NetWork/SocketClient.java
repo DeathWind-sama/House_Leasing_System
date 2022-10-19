@@ -40,9 +40,8 @@ public class SocketClient {
             String endStr=reader.readLine();//last line
             //end communication
             socket.close();
-            //check end
 //            System.out.println("接收到回复： " + strReturn);
-            //end检测
+            //check end
             if(!endStr.equals("MSG_END")){
                 System.err.println("end: "+endStr);
                 throw new SocketReceivedDataErrorException();

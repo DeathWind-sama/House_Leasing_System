@@ -66,7 +66,7 @@ public class SocketServer {
                                 msgToReturn = "ERROR: Received Head Error.";
                                 System.err.println(msgToReturn);
                             }
-//                            msgToReturn="HTTP/1.0 200 OK";
+
                             //返回消息给socket客户端（客户端通过阻塞来等待回复）
                             PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
                             writer.println(msgToReturn);
