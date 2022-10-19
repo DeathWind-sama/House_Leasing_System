@@ -51,7 +51,10 @@ public class SocketClient {
             System.err.println("ERROR: Fail To Connect.");
             return false;
         }catch (SocketReceivedDataErrorException e){
-            System.err.println("ERROR: Received Data Error.");
+            System.err.println("ERROR: Received Data End Error.");
+            return false;
+        }catch (NumberFormatException e){
+            System.err.println("ERROR: Received Data Head Error.");
             return false;
         } catch (IOException e) {
             e.printStackTrace();
