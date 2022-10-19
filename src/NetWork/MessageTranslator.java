@@ -30,8 +30,9 @@ public class MessageTranslator {
 
     private static RequestEnum translateMsgToRequest(ArrayList<String> analysedMsg) throws UnknownRequestException{
         try {
-            if(analysedMsg.get(0).equals("LOGIN")){
-                return RequestEnum.LOGIN;
+            switch (analysedMsg.get(0)){
+                case "LOGIN":
+                    return RequestEnum.LOGIN;
             }
         }catch (ArrayIndexOutOfBoundsException ignored){}
         //Can find the corresponding request
