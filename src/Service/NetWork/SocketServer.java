@@ -13,6 +13,10 @@ import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * 调用turnOnServer以打开服务器。
+ * 调用shutOffServer以关闭服务器。
+ */
 public class SocketServer {
     private static ServerSocket server;
 
@@ -87,6 +91,10 @@ public class SocketServer {
         }).start();
     }
 
+    /**
+     * 关闭服务器
+     * @return 是否成功关闭服务器
+     */
     public static boolean shutOffServer(){
         if(server!=null){
             try {
