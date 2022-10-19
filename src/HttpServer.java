@@ -4,17 +4,16 @@ import java.net.Socket;
 import java.util.Objects;
 
 public class HttpServer {
-    private static final Integer port = 8080;//HTTP默认端口80
+    private static final Integer port = 8080;
     public static void main(String[] args) {
         ServerSocket serverSocket;
         try {
-            //建立服务器Socket,监听客户端请求
             serverSocket = new ServerSocket(port);
             System.out.println("Server is running on port:" + serverSocket.getLocalPort());
-            //死循环不间断监听客户端请求
+            //监听客户端请求
             while (true) {
                 final Socket socket = serverSocket.accept();
-                System.out.println("biuld a new tcp link with client,the cient address:" +
+                System.out.println("New Link with Client:" +
                         socket.getInetAddress() + ":" + socket.getPort());
                 //并发处理HTTP客户端请求
                 new Thread(() -> {
