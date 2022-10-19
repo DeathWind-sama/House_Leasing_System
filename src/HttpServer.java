@@ -33,6 +33,7 @@ public class HttpServer {
     public static void service(Socket socket) {
             InputStream inSocket;
             try {
+                //接收
                 //获取HTTP请求头
                 inSocket = socket.getInputStream();
                 int size = inSocket.available();
@@ -60,10 +61,11 @@ public class HttpServer {
                     }
                 }
 
+                //回复
+                OutputStream outSocket = socket.getOutputStream();
                 //将响应头发送给客户端
                 String responseFirstLine = "HTTP/1.1 200 OK\r\n";
                 String responseHead = "Content-Type:" + contentType +"\r\n";
-                OutputStream outSocket = socket.getOutputStream();
                 System.out.println("ServerResponse:\n"+responseFirstLine+"\n"+responseHead+"\n"
                         + "--------------------------------------------------------------------");
                 outSocket.write(responseFirstLine.getBytes());
@@ -73,14 +75,14 @@ public class HttpServer {
                 FileInputStream writehtml = new FileInputStream("d:/webroot"+uri);
                 outSocket.write("\r\n".getBytes());
                 byte[] htmlbuffer = new byte[writehtml.available()];
-                if(writehtml !=null){
-                    int len = 0;
-                    System.out.println("writeHtml");
-                    while((len = writehtml.read(htmlbuffer)) != -1){
-                        outSocket.write(htmlbuffer, 0,len);
-                    }
+                int len = 0;
+                System.out.println("writeHtml");
+                while((len = writehtml.read(htmlbuffer)) != -1){
+                    outSocket.write(htmlbuffer, 0,len);
                 }
                 outSocket.close();
+
+                //结束通信
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
