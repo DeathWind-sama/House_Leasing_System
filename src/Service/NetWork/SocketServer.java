@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,22 +14,26 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class SocketServer {
-    
+    private static ServerSocket server;
 
     /**
      * 开启服务端。无需异步调用。
      * @throws IOException 开ServerSocket失败时弹出
      */
     public static void turnOnServer() throws IOException {
-        final ServerSocket server;
+//         ServerSocket server;
         ExecutorService executorService = Executors.newFixedThreadPool(100);
         //设定服务器端口，ip不设置表示默认的本机ip
         server = new ServerSocket(8888);
+        System.out.println("Server Turned On.");
         //开始接受并处理消息，使用独立线程
         new Thread(() -> {
             while (true) {
                 //阻塞，等待访问
                 try {
+                    if(server==null){
+                        break;
+                    }
                     Socket clientSocket = server.accept();
                     Runnable runnable = () -> {
                         try {
@@ -69,11 +74,32 @@ public class SocketServer {
                         }
                     };
                     executorService.submit(runnable);
+                }catch (SocketException e){
+                    if(e.getMessage().equals("socket closed")){
+                        break;
+                    }else{
+                        e.printStackTrace();
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
+    }
+
+    public static boolean shutOffServer(){
+        if(server!=null){
+            try {
+                server.close();
+                server=null;
+                System.out.println("Shut Down Server Success.");
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        System.err.println("ERROR: Shut Down Server Failed.");
+        return false;
     }
 
     private static String getMsgToReturn(ArrayList<String> msg) {
@@ -89,11 +115,16 @@ public class SocketServer {
 
     public static void main(String[] args) {
         try {
-            SocketServer.turnOnServer();
+            turnOnServer();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Server Turned On.");
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        shutOffServer();
     }
 }
 
