@@ -1,3 +1,5 @@
+import NetWork.MessageTranslator;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,6 +24,7 @@ public class HttpServer {
                         socket.getInetAddress() + ":" + socket.getPort());
                 //并发处理HTTP客户端请求
                 new Thread(() -> {
+                    System.out.println("Serve: "+socket.getPort());
                     service(socket);
                 }).start();
             }
@@ -35,17 +38,24 @@ public class HttpServer {
         String fun = "";
         String uri = "";
         String contentType = "";
+
+        BufferedReader br = null;
+
         //接收
         try {
             socket.setSoTimeout(3000);//设置超时
             InputStream soIS = socket.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(soIS));
+            br = new BufferedReader(new InputStreamReader(soIS));
 
             //读取请求行+头存入heads
             ArrayList<String> heads = new ArrayList<>();
             String lineStr;
             System.out.println("ClientBrowser:");
             while (!Objects.equals(lineStr = br.readLine(), "")) {
+                if(lineStr==null){
+                    System.err.println("ERROR: Socket Closed, Fail To Handle Request of "+socket.getInetAddress() + ":" + socket.getPort());
+                    return;//Socket被中途关闭才会出现null，此时直接无视此次请求
+                }
                 heads.add(lineStr);
                 System.out.println(socket.getPort() + "| " + lineStr);
             }
@@ -92,10 +102,10 @@ public class HttpServer {
                             + "--------------------------------------------------------------------");
                     outSocket.write(responseFirstLine.getBytes());
                     outSocket.write(responseHead.getBytes());
+                    outSocket.write("\r\n".getBytes());//不write这句，前端就会阻塞
 
                     //通过HTTP请求中的uri读取相应文件发送给客户端
                     if (!(fileIS == null)) {
-                        outSocket.write("\r\n".getBytes());
                         byte[] fileBuffer = new byte[fileIS.available()];
                         int len;
                         System.out.println("writeHtml");
@@ -105,6 +115,14 @@ public class HttpServer {
                     }
                     break;
                 case "POST":
+                    if(br==null){
+                        return;
+                    }
+                    String msg= br.readLine();
+                    ArrayList<String> msgArray=new ArrayList<>();
+                    msgArray.add(msg);
+                    ArrayList<String> msgToReturnArray = MessageTranslator.handleMsg(msgArray);
+
 
                     break;
             }
