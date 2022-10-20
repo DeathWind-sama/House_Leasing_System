@@ -1,4 +1,5 @@
 import NetWork.MessageTranslator;
+import sun.security.util.Length;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -34,45 +35,57 @@ public class HttpServer {
     }
 
     public static void service(Socket socket) {
+        int clientPort= socket.getPort();
+
         String responseCode = "200 OK";
         String fun = "";
         String uri = "";
-        String contentType = "";
+        String requestContentType = "";
+        int requestContentLength=0;
 
         BufferedReader br = null;
 
         //接收
         try {
             socket.setSoTimeout(3000);//设置超时
-            InputStream soIS = socket.getInputStream();
-            br = new BufferedReader(new InputStreamReader(soIS));
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             //读取请求行+头存入heads
             ArrayList<String> heads = new ArrayList<>();
             String lineStr;
             System.out.println("ClientBrowser:");
+            //逐行读，直到遇到空行
             while (!Objects.equals(lineStr = br.readLine(), "")) {
+                //Socket被中途关闭才会出现null，此时直接无视此次请求，退出处理
                 if(lineStr==null){
                     System.err.println("ERROR: Socket Closed, Fail To Handle Request of "+socket.getInetAddress() + ":" + socket.getPort());
-                    return;//Socket被中途关闭才会出现null，此时直接无视此次请求
+                    return;
                 }
+                //按行加入列表
                 heads.add(lineStr);
-                System.out.println(socket.getPort() + "| " + lineStr);
+                System.out.println(clientPort + "| " + lineStr);
             }
-            System.out.println(heads + "\n"
-                    + "------------------------------------------------------------------");
+            System.out.println("\n"+"------------------------------------------------------------------");
 
             //解析首行
             String[] firstLineParts=heads.get(0).split(" ");
             fun=firstLineParts[0];
             uri=firstLineParts[1];
-            if (Objects.equals(uri, "/") || Objects.equals(uri, "")) {
-                uri = "/index.html";
-            }
-            if (uri.contains("html")) {
-                contentType = "text/html";
-            } else {
-                contentType = "application/octet-stream";
+            System.out.println(clientPort + "| "+"FUN: "+fun);
+            System.out.println(clientPort + "| "+"URI: "+uri);
+
+            //解析head各项
+            for(String s:heads) {
+                //读取Content-Type
+                if (s.startsWith("Content-Type:")) {
+                    requestContentType = s.substring(14);//16 is the beginning index of number
+                    System.out.println(clientPort + "| "+"Content-Type: "+requestContentType);
+                }
+                //读取contentLength
+                if (s.startsWith("Content-Length:")) {
+                    requestContentLength = Integer.parseInt(s.substring(16));//16 is the beginning index of number
+                    System.out.println(clientPort + "| "+"Content-Length: "+requestContentLength);
+                }
             }
         }catch (SocketTimeoutException e) {
             responseCode="408 Time Out";
@@ -82,11 +95,25 @@ public class HttpServer {
             e.printStackTrace();
         }
 
-        //回复
+        //处理与回复
         try {
             OutputStream outSocket = socket.getOutputStream();
+            String ServerResponse;
+            String contentType="";
+
             switch (fun) {
                 case "GET":
+                    //获取uri
+                    if (Objects.equals(uri, "/") || Objects.equals(uri, "")) {
+                        uri = "/index.html";
+                    }
+                    //判断需求类型
+                    if (uri.contains("html")) {
+                        contentType = "text/html";
+                    } else {
+                        contentType = "application/octet-stream";
+                    }
+
                     //寻找文件
                     FileInputStream fileIS = null;
                     try {
@@ -96,15 +123,13 @@ public class HttpServer {
                     }
 
                     //写响应头
-                    String responseFirstLine = "HTTP/1.1 " + responseCode + "\r\n";
-                    String responseHead = "Content-Type:" + contentType + "\r\n";
-                    System.out.println("ServerResponse:\n" + responseFirstLine + "\n" + responseHead + "\n"
+                    ServerResponse=getResponseHead(responseCode,contentType);
+                    outSocket.write(ServerResponse.getBytes());
+                    System.out.println("--------------------------------------------------------------------\n"
+                            + "ServerResponse:\n" + ServerResponse
                             + "--------------------------------------------------------------------");
-                    outSocket.write(responseFirstLine.getBytes());
-                    outSocket.write(responseHead.getBytes());
-                    outSocket.write("\r\n".getBytes());//不write这句，前端就会阻塞
 
-                    //通过HTTP请求中的uri读取相应文件发送给客户端
+                    //通过uri读取相应文件以发送
                     if (!(fileIS == null)) {
                         byte[] fileBuffer = new byte[fileIS.available()];
                         int len;
@@ -118,12 +143,25 @@ public class HttpServer {
                     if(br==null){
                         return;
                     }
-                    String msg= br.readLine();
-                    ArrayList<String> msgArray=new ArrayList<>();
-                    msgArray.add(msg);
-                    ArrayList<String> msgToReturnArray = MessageTranslator.handleMsg(msgArray);
+                    //读请求体
+                    char[] buffer = new char[requestContentLength];
+                    br.read(buffer);
+                    String msg = new String(buffer);
+                    System.out.println(clientPort + "| "+"MSG: "+msg);
 
+                    //处理请求并获取回复信息
+                    String msgToReturn="msg to return";
 
+                    //回复
+                    //写响应头
+                    ServerResponse=getResponseHead(responseCode,contentType);
+                    outSocket.write(ServerResponse.getBytes());
+                    //写响应体
+                    String body=msgToReturn+"\r\n";
+                    outSocket.write((body).getBytes());
+                    System.out.println("--------------------------------------------------------------------\n"
+                            + "ServerResponse:\n" + ServerResponse + body
+                            + "--------------------------------------------------------------------");
                     break;
             }
             outSocket.close();
@@ -133,7 +171,12 @@ public class HttpServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    private static String getResponseHead(String responseCode,String requestContentType){
+        String responseFirstLine = "HTTP/1.1 " + responseCode + "\r\n";
+        String responseHead = "Content-Type:" + requestContentType + "\r\n";
+        return responseFirstLine+responseHead+"\r\n";
     }
 }
 
