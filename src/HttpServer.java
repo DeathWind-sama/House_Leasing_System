@@ -39,7 +39,7 @@ public class HttpServer {
         try {
             socket.setSoTimeout(3000);//设置超时
             InputStream soIS = socket.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(soIS, "GBK"));
+            BufferedReader br = new BufferedReader(new InputStreamReader(soIS));
 
             //读取请求行+头存入heads
             ArrayList<String> heads = new ArrayList<>();
