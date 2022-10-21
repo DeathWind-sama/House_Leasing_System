@@ -1,17 +1,14 @@
-import NetWork.MessageTranslator;
-import sun.security.util.Length;
-
 import java.io.*;
 import java.net.*;
-import java.nio.charset.StandardCharsets;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class HttpServer {
-    private static final Integer port = 8080;
+    private static final int port = 8080;
+    private static final String printDivideMark="----------------------------------------------------------------------------";
+
     public static void main(String[] args) {
         ServerSocket serverSocket;
         try {
@@ -25,7 +22,6 @@ public class HttpServer {
                         socket.getInetAddress() + ":" + socket.getPort());
                 //并发处理HTTP客户端请求
                 Thread t= new Thread(() -> {
-                    System.out.println("Serve: "+socket.getPort());
                     service(socket);
                 });
                 serviceThreadPool.submit(t);
@@ -48,6 +44,8 @@ public class HttpServer {
 
         BufferedReader br = null;
 
+        System.out.println("Start to Serve: "+clientMark);
+
         //接收
         try {
             socket.setSoTimeout(3000);//设置超时
@@ -66,29 +64,29 @@ public class HttpServer {
                 //按行加入列表
                 heads.add(lineStr);
             }
-            System.out.println("------------------------------------------------------------------\n"
+            System.out.println(printDivideMark+"\n"
                     +"Client "+clientMark+ " Request Head:\n"
-                    +String.join("\n",heads)+"\n"
-                    +"------------------------------------------------------------------");
+                    +"\t"+String.join("\n\t",heads)+"\n"
+                    +printDivideMark);
 
             //解析首行
             String[] firstLineParts=heads.get(0).split(" ");
             fun=firstLineParts[0];
             uri=firstLineParts[1];
-            System.out.println(clientMark + "| "+"FUN: "+fun);
-            System.out.println(clientMark + "| "+"URI: "+uri);
+            System.out.println(clientMark + " | "+"FUN: "+fun);
+            System.out.println(clientMark + " | "+"URI: "+uri);
 
             //解析head各项
             for(String s:heads) {
                 //读取Content-Type
                 if (s.startsWith("Content-Type:")) {
                     requestContentType = s.substring(14);//16 is the beginning index of number
-                    System.out.println(clientMark + "| "+"Content-Type: "+requestContentType);
+                    System.out.println(clientMark + " | "+"Content-Type: "+requestContentType);
                 }
                 //读取contentLength
                 if (s.startsWith("Content-Length:")) {
                     requestContentLength = Integer.parseInt(s.substring(16));//16 is the beginning index of number
-                    System.out.println(clientMark + "| "+"Content-Length: "+requestContentLength);
+                    System.out.println(clientMark + " | "+"Content-Length: "+requestContentLength);
                 }
             }
         }catch (SocketTimeoutException e) {
@@ -101,7 +99,7 @@ public class HttpServer {
 
         //处理与回复
         try {
-            OutputStream outSocket = socket.getOutputStream();
+            OutputStream soOS = socket.getOutputStream();
             String ServerResponse;
             String contentType="";
 
@@ -128,19 +126,20 @@ public class HttpServer {
 
                     //写响应头
                     ServerResponse=getResponseHead(responseCode,contentType);
-                    outSocket.write(ServerResponse.getBytes());
-                    System.out.println("--------------------------------------------------------------------\n"
+                    soOS.write(ServerResponse.getBytes());
+                    System.out.println(printDivideMark+"\n"
                             + "ServerResponse to "+clientMark + ":\n" + ServerResponse
-                            + "--------------------------------------------------------------------");
+                            + printDivideMark);
 
                     //通过uri读取相应文件以发送
                     if (!(fileIS == null)) {
                         byte[] fileBuffer = new byte[fileIS.available()];
                         int len;
-                        System.out.println("writeHtml");
+                        System.out.println("Send File \""+ uri +"\" ...");
                         while ((len = fileIS.read(fileBuffer)) != -1) {
-                            outSocket.write(fileBuffer, 0, len);
+                            soOS.write(fileBuffer, 0, len);
                         }
+                        System.out.println("File \""+ uri +"\" Sending Complete.");
                     }
                     break;
                 case "POST":
@@ -159,16 +158,16 @@ public class HttpServer {
                     //回复
                     //写响应头
                     ServerResponse=getResponseHead(responseCode,contentType);
-                    outSocket.write(ServerResponse.getBytes());
+                    soOS.write(ServerResponse.getBytes());
                     //写响应体
                     String body=msgToReturn+"\r\n";
-                    outSocket.write((body).getBytes());
-                    System.out.println("--------------------------------------------------------------------\n"
+                    soOS.write((body).getBytes());
+                    System.out.println(printDivideMark+"\n"
                             + "ServerResponse to "+clientMark + ":\n" + ServerResponse + body
-                            + "--------------------------------------------------------------------");
+                            + printDivideMark);
                     break;
             }
-            outSocket.close();
+            soOS.close();
 
             //结束通信
             socket.close();
