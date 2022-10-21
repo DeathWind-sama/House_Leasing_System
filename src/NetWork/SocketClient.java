@@ -1,5 +1,7 @@
 package NetWork;
 
+import netscape.javascript.JSObject;
+
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;

@@ -9,14 +9,24 @@ public class HttpServer {
     private static final int port = 8080;
     private static final String printDivideMark="----------------------------------------------------------------------------";
 
+    private static boolean isWorking=false;
+
     public static void main(String[] args) {
+        turnOnHttpServer();
+    }
+
+    /**
+     * 若想异步监听请求，请异步调用
+     */
+    public static void turnOnHttpServer(){
         ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(port);
+            isWorking=true;
             System.out.println("Server is running on port:" + serverSocket.getLocalPort());
             ExecutorService serviceThreadPool = Executors.newFixedThreadPool(100);//线程池管理
             //监听客户端请求
-            while (true) {
+            while (isWorking) {
                 final Socket socket = serverSocket.accept();
                 System.out.println("New Link with Client:" +
                         socket.getInetAddress() + ":" + socket.getPort());
@@ -31,7 +41,7 @@ public class HttpServer {
         }
     }
 
-    public static void service(Socket socket) {
+    private static void service(Socket socket) {
         InetAddress clientAddress=socket.getInetAddress();
         int clientPort= socket.getPort();
         String clientMark=clientAddress+":"+clientPort;
@@ -46,6 +56,7 @@ public class HttpServer {
 
         System.out.println("Start to Serve: "+clientMark);
 
+        //
         //接收
         try {
             socket.setSoTimeout(3000);//设置超时
@@ -97,6 +108,7 @@ public class HttpServer {
             e.printStackTrace();
         }
 
+        //
         //处理与回复
         try {
             OutputStream soOS = socket.getOutputStream();
@@ -135,7 +147,7 @@ public class HttpServer {
                     if (!(fileIS == null)) {
                         byte[] fileBuffer = new byte[fileIS.available()];
                         int len;
-                        System.out.println("Send File \""+ uri +"\" ...");
+                        System.out.println("File \""+ uri +"\" Sending...");
                         while ((len = fileIS.read(fileBuffer)) != -1) {
                             soOS.write(fileBuffer, 0, len);
                         }
