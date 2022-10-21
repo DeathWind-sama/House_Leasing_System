@@ -2,14 +2,13 @@ import NetWork.MessageTranslator;
 import sun.security.util.Length;
 
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HttpServer {
     private static final Integer port = 8080;
@@ -18,16 +17,18 @@ public class HttpServer {
         try {
             serverSocket = new ServerSocket(port);
             System.out.println("Server is running on port:" + serverSocket.getLocalPort());
+            ExecutorService serviceThreadPool = Executors.newFixedThreadPool(100);//线程池管理
             //监听客户端请求
             while (true) {
                 final Socket socket = serverSocket.accept();
                 System.out.println("New Link with Client:" +
                         socket.getInetAddress() + ":" + socket.getPort());
                 //并发处理HTTP客户端请求
-                new Thread(() -> {
+                Thread t= new Thread(() -> {
                     System.out.println("Serve: "+socket.getPort());
                     service(socket);
-                }).start();
+                });
+                serviceThreadPool.submit(t);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -35,7 +36,9 @@ public class HttpServer {
     }
 
     public static void service(Socket socket) {
+        InetAddress clientAddress=socket.getInetAddress();
         int clientPort= socket.getPort();
+        String clientMark=clientAddress+":"+clientPort;
 
         String responseCode = "200 OK";
         String fun = "";
@@ -53,7 +56,6 @@ public class HttpServer {
             //读取请求行+头存入heads
             ArrayList<String> heads = new ArrayList<>();
             String lineStr;
-            System.out.println("ClientBrowser:");
             //逐行读，直到遇到空行
             while (!Objects.equals(lineStr = br.readLine(), "")) {
                 //Socket被中途关闭才会出现null，此时直接无视此次请求，退出处理
@@ -63,33 +65,35 @@ public class HttpServer {
                 }
                 //按行加入列表
                 heads.add(lineStr);
-                System.out.println(clientPort + "| " + lineStr);
             }
-            System.out.println("\n"+"------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------\n"
+                    +"Client "+clientMark+ " Request Head:\n"
+                    +String.join("\n",heads)+"\n"
+                    +"------------------------------------------------------------------");
 
             //解析首行
             String[] firstLineParts=heads.get(0).split(" ");
             fun=firstLineParts[0];
             uri=firstLineParts[1];
-            System.out.println(clientPort + "| "+"FUN: "+fun);
-            System.out.println(clientPort + "| "+"URI: "+uri);
+            System.out.println(clientMark + "| "+"FUN: "+fun);
+            System.out.println(clientMark + "| "+"URI: "+uri);
 
             //解析head各项
             for(String s:heads) {
                 //读取Content-Type
                 if (s.startsWith("Content-Type:")) {
                     requestContentType = s.substring(14);//16 is the beginning index of number
-                    System.out.println(clientPort + "| "+"Content-Type: "+requestContentType);
+                    System.out.println(clientMark + "| "+"Content-Type: "+requestContentType);
                 }
                 //读取contentLength
                 if (s.startsWith("Content-Length:")) {
                     requestContentLength = Integer.parseInt(s.substring(16));//16 is the beginning index of number
-                    System.out.println(clientPort + "| "+"Content-Length: "+requestContentLength);
+                    System.out.println(clientMark + "| "+"Content-Length: "+requestContentLength);
                 }
             }
         }catch (SocketTimeoutException e) {
             responseCode="408 Time Out";
-            System.err.println("ERROR: Time Out. Maybe an empty HTTP request.");
+            System.err.println("ERROR: "+clientMark+ " Time Out. Maybe an empty HTTP request.");
 //            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,7 +130,7 @@ public class HttpServer {
                     ServerResponse=getResponseHead(responseCode,contentType);
                     outSocket.write(ServerResponse.getBytes());
                     System.out.println("--------------------------------------------------------------------\n"
-                            + "ServerResponse:\n" + ServerResponse
+                            + "ServerResponse to "+clientMark + ":\n" + ServerResponse
                             + "--------------------------------------------------------------------");
 
                     //通过uri读取相应文件以发送
@@ -160,7 +164,7 @@ public class HttpServer {
                     String body=msgToReturn+"\r\n";
                     outSocket.write((body).getBytes());
                     System.out.println("--------------------------------------------------------------------\n"
-                            + "ServerResponse:\n" + ServerResponse + body
+                            + "ServerResponse to "+clientMark + ":\n" + ServerResponse + body
                             + "--------------------------------------------------------------------");
                     break;
             }
