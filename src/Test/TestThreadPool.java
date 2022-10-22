@@ -110,7 +110,9 @@ class LockFairTest implements Runnable{
         LockFairTest lft=new LockFairTest();
         Thread th1=new Thread(lft);
         Thread th2=new Thread(lft);
+        Thread th3=new Thread(lft);
         th1.start();
         th2.start();
+        th3.start();
     }
 }
