@@ -19,24 +19,18 @@ public class LoginManager {
     public void login(String ID,String psw) {
         System.out.println("Login...");
         //使用异步以把主进程留给其他请求
-        new Thread(() -> {
-            AtomicBoolean isSuccess = new AtomicBoolean(false);
-            isSuccess.set(ServiceMainLogic.serviceToDaoInterface.matchPeopleToLogin(ID, psw));
-            checkLoginSuccess(isSuccess.get());//登录操作完成，根据是否成功进行分支
-        }).start();
+        boolean isSuccess=ServiceMainLogic.serviceToDaoInterface.matchPeopleToLogin(ID, psw);
+        //登录操作完成，根据是否成功进行分支
+        if(isSuccess) {
+            System.out.println("Login Success");
+        }else{
+            System.out.println("Login Failed");
+        }
     }
 
     public void register(People people){
         if(people instanceof Homeowner){
 
-        }
-    }
-
-    private void checkLoginSuccess(boolean isSuccess) {
-        if(isSuccess) {
-            System.out.println("Login Success");
-        }else{
-            System.out.println("Login Failed");
         }
     }
 
