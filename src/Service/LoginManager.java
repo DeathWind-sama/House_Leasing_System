@@ -21,7 +21,7 @@ public class LoginManager {
         //使用异步以把主进程留给其他请求
         new Thread(() -> {
             AtomicBoolean isSuccess = new AtomicBoolean(false);
-            isSuccess.set(ServiceMainLogic.serviceToDaoInterface.matchUserToLogin(ID, psw));
+            isSuccess.set(ServiceMainLogic.serviceToDaoInterface.matchPeopleToLogin(ID, psw));
             checkLoginSuccess(isSuccess.get());//登录操作完成，根据是否成功进行分支
         }).start();
     }
