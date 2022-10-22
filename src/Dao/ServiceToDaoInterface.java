@@ -6,8 +6,7 @@ import java.util.ArrayList;
 
 /**
  * 若返回类型为boolean，则意为返回“xx是否成功”
- * 若返回值为ArrayList等引用类型，请每次都new一个新引用再赋值，使得旧表与新表独立
- * 虽然删除某项要以整个类作为参数，但实际上只要配对ID即可
+ * 查询结果放在以“Result”为结尾的参数上
  * 若要返回对象，一定要保证此对象的所有属性均已赋值到位
  */
 public interface ServiceToDaoInterface {
