@@ -11,20 +11,46 @@ public class HttpServer {
 
     private static boolean isWorking=false;
 
+    private static ServerSocket serverSocket=null;
+    private static ExecutorService serviceThreadPool=null;
+
     public static void main(String[] args) {
         turnOnHttpServer();
+    }
+
+    /**
+     * 让服务器完成当前任务后自己关机
+     */
+    public static void hotShutDownServer(){
+        isWorking=false;
+    }
+
+    /**
+     * 暴力关掉server socket，未知后果
+     * @return 是否成功关掉
+     */
+    public static boolean coolShutDownServer(){
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     /**
      * 若想异步监听请求，请异步调用
      */
     public static void turnOnHttpServer(){
-        ServerSocket serverSocket;
         try {
             serverSocket = new ServerSocket(port);
             isWorking=true;
             System.out.println("Server is running on port:" + serverSocket.getLocalPort());
-            ExecutorService serviceThreadPool = Executors.newFixedThreadPool(100);//线程池管理
+
+            //线程池管理
+            serviceThreadPool = Executors.newFixedThreadPool(100);
+
             //监听客户端请求
             while (isWorking) {
                 final Socket socket = serverSocket.accept();
@@ -38,6 +64,17 @@ public class HttpServer {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        //关闭资源
+        if(serviceThreadPool!=null) {
+            serviceThreadPool.shutdown();
+        }
+        if(serverSocket!=null){
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
