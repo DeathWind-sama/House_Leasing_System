@@ -11,9 +11,12 @@ import java.util.ArrayList;
  */
 public interface ServiceToDaoInterface {
     //People    注意判断两种人
-    boolean matchPeopleToLogin(String ID, String psw);//查看是否有该用户已被登记
-    boolean registerPeople(People people,String password);//注册（登记）
-    boolean getPeople(String ID,People peopleResult);//查询
+    boolean matchPeopleToLogin(String ID,String pwd);//查看是否有该用户已被登记
+
+    boolean getPeople(String ID, People peopleResult);
+
+    boolean registerPeople(People people, String password);//注册（登记）
+    // boolean getPeople(String ID,People peopleResult);//查询(管理员权限）
 //    boolean getAllHomeowner(ArrayList<Homeowner> homeownerArrayList);//返回所有房主（管理员权限）
 //    boolean getAllTenant(ArrayList<Tenant> tenantArrayList);//返回所有租赁者（管理员权限）
 
@@ -22,7 +25,7 @@ public interface ServiceToDaoInterface {
     boolean delHouse(String houseID);//删除
     boolean getHouse(String houseID,House houseResult);//查询
     boolean getOwnHouses(String ID,ArrayList<House> houseArrayListResult);//获取一个房主登记的所有房子
-//    boolean getAllHouses(ArrayList<House> houseArrayList);//返回所有房子（管理员权限）
+    //    boolean getAllHouses(ArrayList<House> houseArrayList);//返回所有房子（管理员权限）
     boolean getAllPayedHouses(ArrayList<House> houseArrayListResult);//返回可被检索到的所有房子
     boolean getSomePayedHouses(int quantity,ArrayList<House> houseArrayListResult);//返回quantity个可被检索到的房子
     boolean unlockHouse(ExpenseSheet expenseSheet);//通过费用单信息将对应房屋设为可被检索
@@ -31,7 +34,7 @@ public interface ServiceToDaoInterface {
     boolean addExpenseSheet(ExpenseSheet expenseSheet);//添加。要生成唯一识别码
     boolean delExpenseSheet(String sheetID);//删除
     boolean getOwnExpenseSheets(People people,ArrayList<ExpenseSheet> expenseSheetArrayListResult);//返回一个人的所有账单，无论有没有付款
-//    boolean getAllExpenseSheets(ArrayList<ExpenseSheet> expenseSheetArrayList);//返回所有账单（管理员权限）
+    //    boolean getAllExpenseSheets(ArrayList<ExpenseSheet> expenseSheetArrayList);//返回所有账单（管理员权限）
     boolean payExpenseSheet(String sheetID);//付钱了，修改isPayed
 
     //Communication Authority
