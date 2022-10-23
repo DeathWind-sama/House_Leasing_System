@@ -53,7 +53,12 @@ public class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public boolean delCommunicationAuthority(String authorityID) {
+    public boolean delCommunicationAuthority(String tenantID,String homeownerID) {
+        return false;
+    }
+
+    @Override
+    public boolean getCommunicationAuthority(String tenantID,String homeownerID) {
         return false;
     }
 

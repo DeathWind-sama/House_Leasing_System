@@ -39,7 +39,8 @@ public interface ServiceToDaoInterface {
 
     //Communication Authority
     boolean addCommunicationAuthority(CommunicationAuthority communicationAuthority);//添加
-    boolean delCommunicationAuthority(String authorityID);//删除
+    boolean delCommunicationAuthority(String tenantID,String homeownerID);//删除
+    boolean getCommunicationAuthority(String tenantID,String homeownerID);//获得
     boolean getOwnCommunicationAuthorities(String ID,ArrayList<CommunicationAuthority> communicationAuthorityArrayListResult);//返回一个人的所有交流许可
 
     //Visit Record
