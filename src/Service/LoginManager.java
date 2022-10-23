@@ -1,6 +1,7 @@
 package Service;
 
 import Object.*;
+import Object.Enums.GenderEnum;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,7 +17,12 @@ public class LoginManager {
 //        throw new AssertionError();
 //    }
 
-    public void login(String ID,String psw) {
+    public static void main(String[] args) {
+        People people=new Tenant("Bob","25346","NewYork city","1919-810","1998.06.08", GenderEnum.MALE);
+        register(people,"123");
+    }
+
+    public static boolean login(String ID,String psw) {
         System.out.println("Login...");
         //使用异步以把主进程留给其他请求
         boolean isSuccess=ServiceMainLogic.serviceToDaoInterface.matchPeopleToLogin(ID, psw);
@@ -26,12 +32,12 @@ public class LoginManager {
         }else{
             System.out.println("Login Failed");
         }
+        return isSuccess;
     }
 
-    public void register(People people){
-        if(people instanceof Homeowner){
-
-        }
+    public static boolean register(People people,String psw){
+        boolean isSuccess=ServiceMainLogic.serviceToDaoInterface.registerPeople(people, psw);
+        return isSuccess;
     }
 
     private String encrypt(String originalCode){
