@@ -1,5 +1,7 @@
 package Service;
 
+import Dao.ServiceToDaoInterface;
+import Dao.ServiceToDaoRealization;
 import Object.*;
 import Object.Enums.GenderEnum;
 
@@ -22,10 +24,12 @@ public class LoginManager {
         register(people,"123");
     }
 
+    static ServiceToDaoInterface serviceToDaoInterface=new ServiceToDaoRealization();
     public static boolean login(String ID,String psw) {
         System.out.println("Login...");
         //使用异步以把主进程留给其他请求
-        boolean isSuccess=ServiceMainLogic.serviceToDaoInterface.matchPeopleToLogin(ID, psw);
+//        boolean isSuccess=ServiceMainLogic.serviceToDaoInterface.matchPeopleToLogin(ID, psw);
+        boolean isSuccess=serviceToDaoInterface.matchPeopleToLogin(ID, psw);
         //登录操作完成，根据是否成功进行分支
         if(isSuccess) {
             System.out.println("Login Success");
@@ -36,7 +40,7 @@ public class LoginManager {
     }
 
     public static boolean register(People people,String psw){
-        boolean isSuccess=ServiceMainLogic.serviceToDaoInterface.registerPeople(people, psw);
+        boolean isSuccess=serviceToDaoInterface.registerPeople(people, psw);
         return isSuccess;
     }
 
