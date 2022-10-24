@@ -31,7 +31,12 @@ public class HttpServer {
      */
     public static boolean coolShutDownServer(){
         try {
-            serverSocket.close();
+            if(serviceThreadPool!=null) {
+                serviceThreadPool.shutdownNow();
+            }
+            if(serverSocket!=null) {
+                serverSocket.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return false;

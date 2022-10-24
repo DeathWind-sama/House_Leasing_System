@@ -20,8 +20,13 @@ public class LoginManager {
 //    }
 
     public static void main(String[] args) {
-        People people=new Tenant("Bob","25346","NewYork city","1919-810","1998.06.08", GenderEnum.MALE);
-        register(people,"123");
+//        People people=new Tenant("John","114","NewYork city","1919-810","1998.06.08", GenderEnum.MALE);
+//        System.out.println(register(people,"456"));
+
+        System.out.println(login("114","456"));
+        System.out.println(login("114","466"));
+        System.out.println(login("114","456"));
+        System.out.println(login("314","456"));
     }
 
     static ServiceToDaoInterface serviceToDaoInterface=new ServiceToDaoRealization();
