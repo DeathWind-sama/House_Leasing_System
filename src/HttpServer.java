@@ -186,7 +186,7 @@ public class HttpServer {
                             + printDivideMark);
 
                     //通过uri读取相应文件以发送
-                    if (!(fileIS == null)) {
+                    if (fileIS != null) {
                         byte[] fileBuffer = new byte[fileIS.available()];
                         int len;
                         System.out.println("File \""+ uri +"\" Sending...");
