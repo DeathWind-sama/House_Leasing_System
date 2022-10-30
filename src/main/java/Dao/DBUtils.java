@@ -10,7 +10,7 @@ public abstract class DBUtils {
 
     public static void init_connection() {
         //资源绑定器
-        ResourceBundle bundle = ResourceBundle.getBundle("Dao/db");
+        ResourceBundle bundle = ResourceBundle.getBundle("db");
         String driver = bundle.getString("driver");
         String url = bundle.getString("url");
         String user = bundle.getString("user");
