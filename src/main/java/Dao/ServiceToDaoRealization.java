@@ -10,7 +10,7 @@ public class ServiceToDaoRealization implements ServiceToDaoInterface {
 
     @Override
     //查看是否有该用户已被登记
-    public boolean matchPeopleToLogin(String ID,String pwd){
+    public boolean matchPeopleToLogin(String ID,String pwd,boolean isHomeowner){
         DBUtils.init_connection();
 
         //默认该客户已登记
