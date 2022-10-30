@@ -23,18 +23,18 @@ public class LoginManager {
 //        People people=new Tenant("John","114","NewYork city","1919-810","1998.06.08", GenderEnum.MALE);
 //        System.out.println(register(people,"456"));
 
-        System.out.println(login("114","456"));
-        System.out.println(login("114","466"));
-        System.out.println(login("114","456"));
-        System.out.println(login("314","456"));
+        System.out.println(login("114","456",true));
+        System.out.println(login("114","466",true));
+        System.out.println(login("114","456",true));
+        System.out.println(login("314","456",true));
     }
 
     static ServiceToDaoInterface serviceToDaoInterface=new ServiceToDaoRealization();
-    public static boolean login(String ID,String psw) {
+    public static boolean login(String ID,String psw,boolean isHomeowner) {
         System.out.println("Login...");
         //使用异步以把主进程留给其他请求
 //        boolean isSuccess=ServiceMainLogic.serviceToDaoInterface.matchPeopleToLogin(ID, psw);
-        boolean isSuccess=serviceToDaoInterface.matchPeopleToLogin(ID, psw);
+        boolean isSuccess=serviceToDaoInterface.matchPeopleToLogin(ID, psw,isHomeowner);
         //登录操作完成，根据是否成功进行分支
         if(isSuccess) {
             System.out.println("Login Success");
