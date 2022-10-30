@@ -1,4 +1,4 @@
-import Service.LoginManager;
+import service.LoginManager;
 import org.junit.Test;
 
 public class LoginManagerTest {
