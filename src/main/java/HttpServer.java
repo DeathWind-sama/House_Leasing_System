@@ -161,7 +161,7 @@ public class HttpServer {
                 case "GET":
                     //获取uri
                     if (Objects.equals(uri, "/") || Objects.equals(uri, "")) {
-                        uri = "/index.html";
+                        uri = "/testindex.html";
                     }
                     //判断需求类型
                     if (uri.contains("html")) {
@@ -266,7 +266,7 @@ public class HttpServer {
 //                    fun = heads[0];
 //                    uri = heads[1];
 //                    if (Objects.equals(uri, "/") || Objects.equals(uri, "")) {
-//                    uri = "/index.html";
+//                    uri = "/testindex.html";
 //                    }
 //                    if (uri.contains("html")) {
 //                    contentType = "text/html";
