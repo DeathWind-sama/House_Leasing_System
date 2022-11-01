@@ -20,22 +20,22 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Servlet: POST to login");
         try{
-            PrintWriter pw = response.getWriter();
-
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             System.out.println("账号是：" + username);
             System.out.println("密码是：" + password);
 
-//            boolean isLoginSuccess=login(username,password,true);
-            boolean isLoginSuccess=true;
+            boolean isLoginSuccess=login(username,password,true);
+//            boolean isLoginSuccess=true;
 
             if(isLoginSuccess){
                 System.out.println("登陆成功");
-                pw.write("success");
+//                pw.write("success");
+                response.sendRedirect("welcome.html");
             }else{
                 System.out.println("登陆失败");
-                pw.write("fail");
+//                pw.write("fail");
+                response.sendRedirect("login.html");
             }
         }catch(IOException e){
             e.printStackTrace();
