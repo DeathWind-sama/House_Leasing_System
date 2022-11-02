@@ -50,9 +50,7 @@ public class SearchHouseServlet extends HttpServlet {
             boolean isSuccess = serviceToDaoInterface.getSomePayedHouses(num, houses);
         }
 
-        JSONArray responseJSArray = JSONArray.parseArray(JSONObject.toJSONString(houses));
-        String responseJSStr=JSONObject.toJSONString(responseJSArray);
-//        String responseJSStr=JSON.toJSONString(houses);
+        String responseJSStr=JSON.toJSONString(houses);
         System.out.println("Response JS: " + responseJSStr);
 
         //response
