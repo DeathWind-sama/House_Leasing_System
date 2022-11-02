@@ -1,6 +1,6 @@
 package legacy.netWork;
 
-import service.enums.RequestEnum;
+import legacy.netWork.enums.RequestEnum;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package service.enums;
+package legacy.netWork.enums;
 
 public enum RequestEnum {
     LOGIN;
