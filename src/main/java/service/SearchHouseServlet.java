@@ -52,6 +52,7 @@ public class SearchHouseServlet extends HttpServlet {
 
         JSONArray responseJSArray = JSONArray.parseArray(JSONObject.toJSONString(houses));
         String responseJSStr=JSONObject.toJSONString(responseJSArray);
+//        String responseJSStr=JSON.toJSONString(houses);
         System.out.println("Response JS: " + responseJSStr);
 
         //response
