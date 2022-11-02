@@ -1,4 +1,4 @@
-package netWork;
+package legacy.netWork;
 
 import java.io.*;
 import java.net.ConnectException;

@@ -1,12 +1,18 @@
 package service;
 
+import dao.ServiceToDaoInterface;
+import dao.ServiceToDaoRealization;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
-import static service.LoginManager.login;
+import static com.alibaba.fastjson2.JSONObject.toJSONString;
 
 @WebServlet(name = "login", value = "/login")
 public class LoginServlet extends HttpServlet {
@@ -19,24 +25,34 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Servlet: POST to login");
+        Map<String,String> responseMap=new HashMap<>();
         try{
-            String username = request.getParameter("username");
+            String id = request.getParameter("id");
             String password = request.getParameter("password");
-            System.out.println("账号是：" + username);
-            System.out.println("密码是：" + password);
+            String identity = request.getParameter("identity");
+            System.out.println("id：" + id);
+            System.out.println("password：" + password);
+            System.out.println("identity：" + identity);
 
-            boolean isLoginSuccess=login(username,password,true);
-//            boolean isLoginSuccess=true;
+            boolean isHomeowner= Objects.equals(identity, "homeowner");
 
-            if(isLoginSuccess){
-                System.out.println("登陆成功");
-//                pw.write("success");
-                response.sendRedirect("welcome.html");
+            //login
+            ServiceToDaoInterface serviceToDaoInterface=new ServiceToDaoRealization();
+            boolean isSuccess = serviceToDaoInterface.matchPeopleToLogin(id, password,isHomeowner);
+
+            if(isSuccess){
+                System.out.println("Login Succeed.");
+                responseMap.put("result","true");
             }else{
-                System.out.println("登陆失败");
-//                pw.write("fail");
-                response.sendRedirect("login.html");
+                System.out.println("Login Fail.");
+                responseMap.put("result","false");
             }
+
+            String responseJSStr=toJSONString(responseMap);
+            System.out.println("Response JS: " + responseJSStr);
+
+            PrintWriter responseWriter = response.getWriter();
+            responseWriter.write(responseJSStr);
         }catch(IOException e){
             e.printStackTrace();
         }
