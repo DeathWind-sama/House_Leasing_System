@@ -1,6 +1,6 @@
-package Dao;
+package dao;
 
-import Object.*;
+import object.*;
 
 import java.util.ArrayList;
 

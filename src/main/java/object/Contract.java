@@ -1,4 +1,4 @@
-package Object;
+package object;
 
 /**
  * 交易双方达成条约后共同申请注册合同，创建此项并加入合同表
