@@ -19,7 +19,6 @@ public class ServiceToDaoRealizationTest {
 
         Tenant tenant=new Tenant("David","888","NightCity","15325256789","2020-9-9", GenderEnum.MALE);
         isSucceed=serviceToDaoInterface.registerPeople(homeowner, "pswDavid");
-        Assert.assertTrue(isSucceed);
 
         //login
         isSucceed = serviceToDaoInterface.matchPeopleToLogin("udsjkladjkladj", "dsakicdcn",true);
