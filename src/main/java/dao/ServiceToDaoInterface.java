@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public interface ServiceToDaoInterface {
     //People    注意判断两种人
-    boolean matchPeopleToLogin(String ID, String psw);//查看是否有该用户已被登记
+    boolean matchPeopleToLogin(String ID, String psw,boolean isHomeowner);//查看是否有该用户已被登记
     boolean registerPeople(People people,String password);//注册（登记）
     boolean getPeople(String ID,People peopleResult,boolean isHomeowner);//查询
 //    boolean getAllHomeowner(ArrayList<Homeowner> homeownerArrayList);//返回所有房主（管理员权限）
