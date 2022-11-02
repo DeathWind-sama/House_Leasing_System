@@ -19,6 +19,10 @@ import java.util.Objects;
 
 import static com.alibaba.fastjson2.JSONObject.toJSONString;
 
+/**
+ * login: 登录。id与密码与身份
+ * register: 注册。须提交完整个人信息
+ */
 @WebServlet(name = "LoginManager", value = "/LoginManager")
 public class LoginServlet extends HttpServlet {
     @Override
@@ -36,9 +40,9 @@ public class LoginServlet extends HttpServlet {
             Method method = getClass().getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
             method.invoke(this, request, response);
         } catch (Exception e) {
+            response.setStatus(404);
             throw new RuntimeException("ERROR: Failed To Call Method: "+methodName);
         }
-        login(request,response);
     }
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
