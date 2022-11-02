@@ -14,7 +14,7 @@ import java.util.Objects;
 
 import static com.alibaba.fastjson2.JSONObject.toJSONString;
 
-@WebServlet(name = "login", value = "/login")
+@WebServlet(name = "Login", value = "/Login")
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
