@@ -1,4 +1,4 @@
-package object;
+package Object;
 
 public class ExpenseSheet {
     private String sheetID="NULL";//由Dao层生成或数据库给予
@@ -8,16 +8,19 @@ public class ExpenseSheet {
     private double payAmount;
     private boolean isPayed=false;
 
+    private String houseID;
+
     public ExpenseSheet(String payerID,String payerName,boolean isHomeowner,double payAmount){
         this.payerID=payerID;
         this.payerName=payerName;
         this.isHomeowner =isHomeowner;
         this.payAmount=payAmount;
     }
-    public ExpenseSheet(String sheetID,String payerID,String payerName,boolean isHomeowner,double payAmount,boolean isPayed){
+    public ExpenseSheet(String sheetID,String payerID,String payerName,boolean isHomeowner,double payAmount,boolean isPayed,String houseID){
         this(payerID,payerName,isHomeowner,payAmount);
         this.sheetID=sheetID;
         this.isPayed=isPayed;
+        this.houseID=houseID;
     }
 
 
@@ -46,6 +49,11 @@ public class ExpenseSheet {
 
     public boolean getIsPayed(){
         return isPayed;
+    }
+
+    public String getHouseID()
+    {
+        return houseID;
     }
 
     //set

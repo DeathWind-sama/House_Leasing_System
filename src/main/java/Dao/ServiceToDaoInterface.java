@@ -1,6 +1,6 @@
-package dao;
+package Dao;
 
-import object.*;
+import Object.*;
 
 import java.util.ArrayList;
 
@@ -11,12 +11,9 @@ import java.util.ArrayList;
  */
 public interface ServiceToDaoInterface {
     //People    注意判断两种人
-    boolean matchPeopleToLogin(String ID,String pwd,boolean isHomeowner);//查看是否有该用户已被登记
-
-    boolean getPeople(String ID, People peopleResult);
-
-    boolean registerPeople(People people, String password);//注册（登记）
-    // boolean getPeople(String ID,People peopleResult);//查询(管理员权限）
+    boolean matchPeopleToLogin(String ID, String psw);//查看是否有该用户已被登记
+    boolean registerPeople(People people,String password);//注册（登记）
+    boolean getPeople(String ID,People peopleResult,boolean isHomeowner);//查询
 //    boolean getAllHomeowner(ArrayList<Homeowner> homeownerArrayList);//返回所有房主（管理员权限）
 //    boolean getAllTenant(ArrayList<Tenant> tenantArrayList);//返回所有租赁者（管理员权限）
 
@@ -39,8 +36,7 @@ public interface ServiceToDaoInterface {
 
     //Communication Authority
     boolean addCommunicationAuthority(CommunicationAuthority communicationAuthority);//添加
-    boolean delCommunicationAuthority(String tenantID,String homeownerID);//删除
-    boolean getCommunicationAuthority(String tenantID,String homeownerID);//获得
+    boolean delCommunicationAuthority(String authorityID);//删除
     boolean getOwnCommunicationAuthorities(String ID,ArrayList<CommunicationAuthority> communicationAuthorityArrayListResult);//返回一个人的所有交流许可
 
     //Visit Record
