@@ -51,6 +51,7 @@ public class LoginServlet extends HttpServlet {
             String responseJSStr=toJSONString(responseMap);
             System.out.println("Response JS: " + responseJSStr);
 
+            //response
             PrintWriter responseWriter = response.getWriter();
             responseWriter.write(responseJSStr);
         }catch(IOException e){
