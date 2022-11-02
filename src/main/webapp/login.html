@@ -5,9 +5,16 @@
     <title>用户登录</title>
 </head>
 <body>
-<form action="login" method="POST">
+<form action="LoginManager" method="POST">
     用户名：<input type="text" name="id"><br/>
     密&nbsp;&nbsp;&nbsp;码：<input type="password" name="password"/><br/>
+    <input type="radio" name="identity" value="homeowner" checked>Homeowner
+    <br>
+    <input type="radio" name="identity" value="tenant">Tenant
+    <br/>
+    <input type="radio" name="function" value="login" checked>Login
+    <br>
+    <input type="radio" name="function" value="register">Register
     <br/>
     <input type="submit" value="登录"/>
 </form>

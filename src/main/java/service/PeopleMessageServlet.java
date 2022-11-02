@@ -19,14 +19,11 @@ public class PeopleMessageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Servlet: POST to PeopleMessage");
-        Map<String,String> responseMap=new HashMap<>();
-        JSONArray responseJSArray=new JSONArray();
-//        try{
-            String identity=request.getParameter("identity");
-            String id=request.getParameter("id");
+        Map<String, String> responseMap = new HashMap<>();
+        JSONArray responseJSArray = new JSONArray();
 
-//        }catch (IOException e){
-//            e.printStackTrace();
-//        }
+        String identity = request.getParameter("identity");
+        String id = request.getParameter("id");
+
     }
 }
