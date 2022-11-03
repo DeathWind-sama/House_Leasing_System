@@ -3,6 +3,7 @@ package service;
 import com.alibaba.fastjson2.JSON;
 import dao.ServiceToDaoInterface;
 import dao.ServiceToDaoRealization;
+import object.ExpenseSheet;
 import object.House;
 import object.enums.HouseTypeEnum;
 
@@ -91,10 +92,14 @@ public class HouseServlet extends HttpServlet {
         boolean isSuccess = serviceToDaoInterface.addHouse(house);
 
         if (isSuccess) {
-            System.out.println("Login Succeed.");
+            System.out.println("Succeed.");
             responseMap.put("result", "true");
+
+            //添加费用单
+            ExpenseSheet expenseSheet=new ExpenseSheet(ownerID,true,ExpenseSheetServlet.registerHousePrice,houseID);
+            serviceToDaoInterface.addExpenseSheet(expenseSheet);
         } else {
-            System.out.println("Login Fail.");
+            System.out.println("Fail.");
             responseMap.put("result", "false");
         }
 
