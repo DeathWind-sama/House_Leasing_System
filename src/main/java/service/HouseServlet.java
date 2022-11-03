@@ -12,6 +12,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,13 +32,13 @@ public class HouseServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Servlet: POST to SearchHouse");
+        System.out.println("Servlet: POST to HouseManager");
         String methodName = request.getParameter("function");
         //use reflection to judge which method to call
         try {
             Method method = getClass().getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
             method.invoke(this, request, response);
-        } catch (Exception e) {
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             response.setStatus(404);
             throw new RuntimeException("ERROR: Failed To Call Method: " + methodName);
         }
@@ -96,8 +97,8 @@ public class HouseServlet extends HttpServlet {
             responseMap.put("result", "true");
 
             //添加费用单
-            ExpenseSheet expenseSheet=new ExpenseSheet(ownerID,true,ExpenseSheetServlet.registerHousePrice,houseID);
-            serviceToDaoInterface.addExpenseSheet(expenseSheet);
+//            ExpenseSheet expenseSheet=new ExpenseSheet(ownerID,true,ExpenseSheetServlet.registerHousePrice,houseID);
+//            serviceToDaoInterface.addExpenseSheet(expenseSheet);
         } else {
             System.out.println("Fail.");
             responseMap.put("result", "false");
