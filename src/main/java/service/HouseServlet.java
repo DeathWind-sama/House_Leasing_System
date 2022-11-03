@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * searchHouse: 查找房子，自己的或所有的。searchtype为"own"时返回id房主的所有房子；为"all"时返回num个所有可被检索的房子信息
+ * searchHouse: 查找房子，自己的或所有的。searchtype为"own"时返回id房主的所有房子；为"all"时返回num个所有可被检索的房子信息。没找到就404
  * registerHouse: 登记房子
  */
 @WebServlet(name = "HouseManager", value = "/HouseManager")
@@ -65,6 +65,11 @@ public class HouseServlet extends HttpServlet {
             //search
             ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
             boolean isSuccess = serviceToDaoInterface.getSomePayedHouses(num, houses);
+        }
+
+        //没有满足要求的房子
+        if(houses.size()==0){
+            response.setStatus(404);
         }
 
         String responseJSStr = JSON.toJSONString(houses);
