@@ -60,7 +60,7 @@ public class LoginServlet extends HttpServlet {
 
         //login
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
-        boolean isSuccess = serviceToDaoInterface.matchPeopleToLogin(id, password, isHomeowner);
+        boolean isSuccess = serviceToDaoInterface.matchPeopleToLogin(id, password,isHomeowner);
 
         if (isSuccess) {
             System.out.println("Login Succeed.");

@@ -19,7 +19,15 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         boolean isSuccess=true;
 
         ResultSet resultSet=null;
-        String sql="select * FROM Tenant where Tenant.ID=? and Tenant.password=?";
+        String sql;
+        if(!isHomeowner)
+        {
+            sql="select * FROM Tenant where Tenant.ID=? and Tenant.password=?";
+        }
+        else
+        {
+            sql="select * FROM houseowner where houseowner.ID=? and houseowner.password=?";
+        }
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = DBUtils.connection.prepareStatement(sql);
@@ -206,7 +214,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             else
             {
                 do {
-                    Contract contract=new Contract(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getDouble(4),resultSet.getDouble(5));
+                    Contract contract=new Contract(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getDouble(4),resultSet.getDouble(5),resultSet.getString(6));
                     contractArrayListResult.add(contract);
                 }while (resultSet.next());
             }
@@ -246,9 +254,9 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
             else
             {
-                Contract contract=new Contract(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getDouble(4),resultSet.getDouble(5));
+                Contract contract=new Contract(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getDouble(4),resultSet.getDouble(5),resultSet.getString(6));
                 contractResult=contract;
-                System.out.println(contract.getHomeownerID());
+
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -288,9 +296,10 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             else
             {
                 //若该没有注册过，则注册成功
-                String sql="INSERT INTO Contract(`ID`,`houseID`,`homeownerID`,`tenantID`,`payTime`,`appointedTime`) VALUES(?,?,?,?,?)";
+                String sql="INSERT INTO Contract(`ID`,`homeownerID`,`tenantID`,`monthlyRent`,`rentArrears`,`houseID`) VALUES(?,?,?,?,?,?)";
                 preparedStatement = DBUtils.connection.prepareStatement(sql);
                 preparedStatement.setString(1,contract.getContractID());
+                preparedStatement.setString(6,contract.getHouseID());
                 preparedStatement.setString(2,contract.getHomeownerID());
                 preparedStatement.setString(3,contract.getTenantID());
                 preparedStatement.setDouble(4,contract.getMonthlyRent());
@@ -319,10 +328,10 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         PreparedStatement preparedStatement = null;
 
         try {
-            String sql="select * FROM visitrecord where tenantID=? ";
+            String sql="select * FROM visitrecord where tenantID=? or homeownerID=?";
             preparedStatement = DBUtils.connection.prepareStatement(sql);
             preparedStatement.setString(1,ID);
-
+            preparedStatement.setString(2,ID);
 
             //处理返回结果集
             resultSet=preparedStatement.executeQuery();
@@ -362,23 +371,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         PreparedStatement preparedStatement = null;
 
         try {
-            //查询是否已经被申请
-            String sql_ask="select * FROM communicationauthority where houseID=?and tenantID=?";
-            preparedStatement = DBUtils.connection.prepareStatement(sql_ask);
-            preparedStatement.setString(1,visitRecord.getHouseID());
-            preparedStatement.setString(2,visitRecord.getTenantID());
 
-            //处理返回结果集
-            resultSet=preparedStatement.executeQuery();
-
-            //如果已被注册
-            if(resultSet.next())
-            {
-                isSuccess=false;
-            }
-            else
-            {
-                //若该没有注册过，则注册成功
                 String sql="INSERT INTO `visitrecord`(`houseID`,`homeownerID`,`tenantID`,`payTime`,`appointedTime`) VALUES(?,?,?,?,?)";
                 preparedStatement = DBUtils.connection.prepareStatement(sql);
                 preparedStatement.setString(1,visitRecord.getHouseID());
@@ -389,7 +382,6 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
 
                 preparedStatement.execute();
-            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -411,9 +403,10 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         PreparedStatement preparedStatement = null;
 
         try {
-            String sql="select * FROM communicationauthority where tenantID=? ";
+            String sql="select * FROM communicationauthority where tenantID=? or homeownerID=?";
             preparedStatement = DBUtils.connection.prepareStatement(sql);
             preparedStatement.setString(1,ID);
+            preparedStatement.setString(2,ID);
 
 
             //处理返回结果集
@@ -426,7 +419,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             else
             {
                 do {
-                    CommunicationAuthority communicationAuthority=new CommunicationAuthority(resultSet.getString(1), resultSet.getString(2));
+                    CommunicationAuthority communicationAuthority=new CommunicationAuthority(resultSet.getString(1), resultSet.getString(2),resultSet.getString(4),resultSet.getString(3));
                     communicationAuthorityArrayListResult.add(communicationAuthority);
 
                 }while (resultSet.next());
@@ -454,10 +447,10 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         try {
             //查询communicationAuthority是否已经被申请
-            String sql_ask="select * FROM communicationauthority where homeownerID=? and tenantID=?";
+            String sql_ask="select * FROM communicationauthority where authorityID=?";
             preparedStatement = DBUtils.connection.prepareStatement(sql_ask);
-            preparedStatement.setString(1,communicationAuthority.getHomeownerID());
-            preparedStatement.setString(2,communicationAuthority.getTenantID());
+            preparedStatement.setString(1,communicationAuthority.getAuthorityID());
+
 
             //处理返回结果集
             resultSet=preparedStatement.executeQuery();
@@ -470,10 +463,12 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             else
             {
                 //若该没有注册过，则注册成功
-                String sql="INSERT INTO communicationauthority(homeownerID,tenantID) VALUES (?,?)";
+                String sql="INSERT INTO communicationauthority(homeownerID,tenantID,houseID,authorityID) VALUES (?,?,?,?)";
                 preparedStatement = DBUtils.connection.prepareStatement(sql);
                 preparedStatement.setString(1,communicationAuthority.getHomeownerID());
                 preparedStatement.setString(2,communicationAuthority.getTenantID());
+                preparedStatement.setString(3,communicationAuthority.getHouseID());
+                preparedStatement.setString(4,communicationAuthority.getAuthorityID());
 
 
                 preparedStatement.execute();
@@ -539,8 +534,10 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         boolean isSuccess=true;
 
         ResultSet resultSet=null;
+        ResultSet resultSet1=null;
 
         PreparedStatement preparedStatement = null;
+
 
         try {
             //查询该sheetID是否已被注册
@@ -559,11 +556,18 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             else
             {
                 //若该sheetID没有注册过，则注册成功
-                String sql="INSERT INTO `expensesheet`(`sheetID`,`payerID`,`payerName`,`isHomeowner`,`payAmount`,`isPayed`,'houseID') VALUES (?,?,?,?,?,?,?)";
+                String sql="INSERT INTO `expensesheet`(`sheetID`,`payerID`,`payerName`,`isHomeowner`,`payAmount`,`isPayed`,`houseID`) VALUES (?,?,?,?,?,?,?)";
+                //先找出payerName
+                String sql_ask1="select * FROM tenant where ID=?";
+                preparedStatement = DBUtils.connection.prepareStatement(sql_ask1);
+                preparedStatement.setString(1,expenseSheet.getPayerID());
+                resultSet1=preparedStatement.executeQuery();
+                resultSet1.next();
+
                 preparedStatement = DBUtils.connection.prepareStatement(sql);
                 preparedStatement.setString(1,expenseSheet.getSheetID());
                 preparedStatement.setString(2,expenseSheet.getPayerID());
-                preparedStatement.setString(3,expenseSheet.getPayerName());
+                preparedStatement.setString(3,resultSet1.getString(2));
                 preparedStatement.setBoolean(4,expenseSheet.getIsHomeOwner());
                 preparedStatement.setDouble(5,expenseSheet.getPayAmount());
                 preparedStatement.setBoolean(6,expenseSheet.getIsPayed());
@@ -586,7 +590,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         boolean isSuccess=false;
         DBUtils.init_connection();
 
-        String sql="UPDATE `expensesheet` SET `isPayed`=TRUE WHERE houseID= ?";
+        String sql="UPDATE `house` SET`isAbleSearched`=TRUE  WHERE `houseID`=?";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = DBUtils.connection.prepareStatement(sql);
@@ -786,9 +790,16 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             else
             {
                 //若该house没有注册过，则注册成功
-                String sql="INSERT INTO `house`(`houseID`) VALUES (?)";
+                String sql="INSERT INTO `house`(`houseID`,`ownerID`,`isLeased`,`isAbleSearched`,`address`,`houseType`,`maxTenantsNum`,`monthlyRent`) VALUES(?,?,?,?,?,?,?,?)";
                 preparedStatement = DBUtils.connection.prepareStatement(sql);
                 preparedStatement.setString(1,house.getHouseID());
+                preparedStatement.setString(2,house.getOwnerID());
+                preparedStatement.setBoolean(3,house.getIsLeased());
+                preparedStatement.setBoolean(4,house.getIsAbleSearched());
+                preparedStatement.setString(5,house.getAddress());
+                preparedStatement.setString(6, String.valueOf(house.getHouseType()));
+                preparedStatement.setDouble(7,house.getMaxTenantsNum());
+                preparedStatement.setDouble(8,house.getMonthlyRent());
 
                 preparedStatement.execute();
             }
@@ -806,14 +817,28 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         DBUtils.init_connection();
         //默认注册成功
         boolean isSuccess=true;
-
+        //默认为租赁者注册
+       boolean isHomeowner=false;
+       if(people instanceof Homeowner)
+       {
+           isHomeowner=true;
+       }
         ResultSet resultSet=null;
 
+        String sql_ask=null;
         PreparedStatement preparedStatement = null;
 
         try {
             //查询改用户是否已被注册
-            String sql_ask="select * FROM Tenant where Tenant.ID=?";
+
+            if(!isHomeowner)
+           {
+               sql_ask="select * FROM Tenant where Tenant.ID=?";
+           }
+           else
+            {
+                sql_ask="select * FROM houseowner where houseowner.ID=?";
+            }
             preparedStatement = DBUtils.connection.prepareStatement(sql_ask);
             preparedStatement.setString(1,people.getID());
 
@@ -827,8 +852,16 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             }
             else
             {
+                String sql = null;
                 //若用户没有注册过，则注册成功
-                String sql="INSERT INTO Tenant(`ID`,`password`,`name`,`telNumber`,`address`) VALUES (?,?,?,?,?)";
+                if(!isHomeowner)
+                {
+                    sql="INSERT INTO Tenant(`ID`,`password`,`name`,`telNumber`,`address`) VALUES (?,?,?,?,?)";
+                }
+                else
+                {
+                    sql="INSERT INTO houseowner(`ID`,`password`,`name`,`telNumber`,`address`) VALUES (?,?,?,?,?)";
+                }
                 preparedStatement = DBUtils.connection.prepareStatement(sql);
                 preparedStatement.setString(1,people.getID());
                 preparedStatement.setString(2,password);
@@ -847,7 +880,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public boolean getPeople(String ID,People peopleResult,boolean isHomeowner)
+    public boolean getPeople(String ID,boolean isHomeowner,People peopleResult)
     {
         DBUtils.init_connection();
         //默认注册成功
@@ -857,7 +890,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         PreparedStatement preparedStatement = null;
         String sql_ask_1="select * FROM Tenant where Tenant.ID=?";
-        String sql_ask_2="select * FROM Tenant where houseowner.ID=?";
+        String sql_ask_2="select * FROM houseowner where houseowner.ID=?";
 
         try {
             //查询改用户是否已被注册
@@ -883,6 +916,8 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             {
                 preparedStatement = DBUtils.connection.prepareStatement(sql_ask_2);
                 preparedStatement.setString(1,ID);
+                //处理返回结果集
+                resultSet=preparedStatement.executeQuery();
                 //如果没有查询到该用户
                 if(!resultSet.next())
                 {
