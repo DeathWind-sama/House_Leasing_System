@@ -14,6 +14,8 @@ public class House {//地址、房型（如平房、带阳台的楼房、独立�
     private int maxTenantsNum;
     private double monthlyRent;
 
+    public House(){}
+
     public House(String houseID,String ownerID,boolean isLeased,boolean isAbleSearched,
                  String address,HouseTypeEnum houseType,int maxTenantsNum,double monthlyRent){
         this.houseID=houseID;

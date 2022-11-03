@@ -104,8 +104,8 @@ public class HouseServlet extends HttpServlet {
             responseMap.put("result", "true");
 
             //添加费用单
-//            ExpenseSheet expenseSheet=new ExpenseSheet(ownerID,true,ExpenseSheetServlet.registerHousePrice,houseID);
-//            serviceToDaoInterface.addExpenseSheet(expenseSheet);
+            ExpenseSheet expenseSheet=new ExpenseSheet(ownerID,true,ExpenseSheetServlet.registerHousePrice,houseID);
+            serviceToDaoInterface.addExpenseSheet(expenseSheet);
         } else {
             System.out.println("Fail.");
             responseMap.put("result", "false");
