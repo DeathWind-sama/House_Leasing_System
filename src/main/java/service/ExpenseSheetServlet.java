@@ -5,7 +5,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "ExpenseSheetServlet", value = "/ExpenseSheetServlet")
+@WebServlet(name = "SheetManager", value = "/SheetManager")
 public class ExpenseSheetServlet extends HttpServlet {
     //set price
     public static final double registerHousePrice=20.5;
@@ -18,6 +18,8 @@ public class ExpenseSheetServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("Servlet: POST to SheetManager");
+        response.setContentType("text/html;charset=utf-8");
 
     }
 }

@@ -33,6 +33,8 @@ public class HouseServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Servlet: POST to HouseManager");
+        response.setContentType("text/html;charset=utf-8");
+
         String methodName = request.getParameter("function");
         //use reflection to judge which method to call
         try {

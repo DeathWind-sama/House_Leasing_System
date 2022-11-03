@@ -34,6 +34,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Servlet: POST to LoginManager");
+        response.setContentType("text/html;charset=utf-8");
+
         String methodName = request.getParameter("function");
         //use reflection to judge which method to call
         try {
