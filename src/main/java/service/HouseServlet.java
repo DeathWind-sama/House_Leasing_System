@@ -1,11 +1,10 @@
 package service;
 
 import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
 import dao.ServiceToDaoInterface;
 import dao.ServiceToDaoRealization;
 import object.House;
+import object.enums.HouseTypeEnum;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -14,6 +13,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Objects;
  * registerHouse: 登记房子
  */
 @WebServlet(name = "HouseManager", value = "/HouseManager")
-public class SearchHouseServlet extends HttpServlet {
+public class HouseServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
@@ -42,9 +43,10 @@ public class SearchHouseServlet extends HttpServlet {
     }
 
     private void searchHouse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String searchType = request.getParameter("searchtype");
+        System.out.println("SearchHouse");
         ArrayList<House> houses = new ArrayList<>();//result
 
+        String searchType = request.getParameter("searchtype");
         if (Objects.equals(searchType, "own")) {
             String id = request.getParameter("id");
             //search
@@ -71,7 +73,36 @@ public class SearchHouseServlet extends HttpServlet {
         responseWriter.write(responseJSStr);
     }
 
-    private void requestHousePayment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void registerHouse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("RegisterHouse");
+        Map<String, String> responseMap = new HashMap<>();
 
+        String houseID=request.getParameter("houseID");
+        String ownerID=request.getParameter("ownerID");
+        String address=request.getParameter("address");
+        HouseTypeEnum houseType= HouseTypeEnum.judgeHouseTypeFromString(request.getParameter("houseType"));
+        int maxTenantsNum= Integer.parseInt(request.getParameter("maxTenantsNum"));
+        double monthlyRent= Double.parseDouble(request.getParameter("monthlyRent"));
+
+        House house=new House(houseID,ownerID,false,false,address,houseType,maxTenantsNum,monthlyRent);
+
+        //search
+        ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
+        boolean isSuccess = serviceToDaoInterface.addHouse(house);
+
+        if (isSuccess) {
+            System.out.println("Login Succeed.");
+            responseMap.put("result", "true");
+        } else {
+            System.out.println("Login Fail.");
+            responseMap.put("result", "false");
+        }
+
+        String responseJSStr = JSON.toJSONString(responseMap);
+        System.out.println("Response JS: " + responseJSStr);
+
+        //response
+        PrintWriter responseWriter = response.getWriter();
+        responseWriter.write(responseJSStr);
     }
 }

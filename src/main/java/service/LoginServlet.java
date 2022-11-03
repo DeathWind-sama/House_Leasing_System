@@ -48,6 +48,7 @@ public class LoginServlet extends HttpServlet {
     private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         System.out.println("Login");
         Map<String, String> responseMap = new HashMap<>();
+
         String id = request.getParameter("id");
         String password = request.getParameter("password");
         String identity = request.getParameter("identity");
