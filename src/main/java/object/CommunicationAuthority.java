@@ -7,9 +7,16 @@ public class CommunicationAuthority {
     private String homeownerID;
     private String tenantID;
 
-    public CommunicationAuthority(String homeownerID,String tenantID){
+    private String authorityID;
+
+    private String houseID;
+
+
+    public CommunicationAuthority(String homeownerID,String tenantID,String authorityID,String houseID){
         this.homeownerID=homeownerID;
         this.tenantID=tenantID;
+        this.authorityID=authorityID;
+        this.houseID=houseID;
     }
 
 
@@ -23,4 +30,8 @@ public class CommunicationAuthority {
     public String getTenantID() {
         return tenantID;
     }
+
+    public String getAuthorityID(){return authorityID;}
+
+    public String getHouseID(){return houseID;}
 }
