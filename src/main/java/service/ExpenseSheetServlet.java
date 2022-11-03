@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ *
+ */
 @WebServlet(name = "SheetManager", value = "/SheetManager")
 public class ExpenseSheetServlet extends HttpServlet {
     //set price
@@ -29,8 +32,12 @@ public class ExpenseSheetServlet extends HttpServlet {
             Method method = getClass().getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
             method.invoke(this, request, response);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            response.setStatus(404);
+            response.sendError(404,"Failed To Call Method: "+methodName);
             throw new RuntimeException("ERROR: Failed To Call Method: "+methodName);
         }
+    }
+
+    private static void searchSheet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
     }
 }
