@@ -25,7 +25,7 @@ public class PeopleMessageServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Servlet: POST to PeopleMessage");
+        System.out.println("---Servlet: POST to PeopleMessage---");
         response.setContentType("text/html;charset=utf-8");
 
         String identity = request.getParameter("identity");

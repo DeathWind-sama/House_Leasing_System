@@ -28,13 +28,13 @@ import static com.alibaba.fastjson2.JSONObject.toJSONString;
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Servlet: GET to login");
+        System.out.println("---Servlet: GET to LoginManager---");
         response.sendRedirect("index.jsp");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Servlet: POST to LoginManager");
+        System.out.println("---Servlet: POST to LoginManager---");
         response.setContentType("text/html;charset=utf-8");
 
         String methodName = request.getParameter("function");
@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        System.out.println("Login");
+        System.out.println("login");
         Map<String, String> responseMap = new HashMap<>();
 
         String id = request.getParameter("id");
@@ -82,7 +82,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     private void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        System.out.println("Register");
+        System.out.println("register");
         Map<String,String> responseMap=new HashMap<>();//?----
         try{
             //get identity

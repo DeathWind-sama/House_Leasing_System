@@ -32,7 +32,7 @@ public class HouseServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Servlet: POST to HouseManager");
+        System.out.println("---Servlet: POST to HouseManager---");
         response.setContentType("text/html;charset=utf-8");
 
         String methodName = request.getParameter("function");
@@ -47,7 +47,7 @@ public class HouseServlet extends HttpServlet {
     }
 
     private void searchHouse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("SearchHouse");
+        System.out.println("searchHouse");
         ArrayList<House> houses = new ArrayList<>();//result
 
         String searchType = request.getParameter("searchtype");
@@ -83,7 +83,7 @@ public class HouseServlet extends HttpServlet {
     }
 
     private void registerHouse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("RegisterHouse");
+        System.out.println("registerHouse");
         Map<String, String> responseMap = new HashMap<>();
 
         String houseID=request.getParameter("houseID");
