@@ -9,17 +9,19 @@ public class VisitRecord {
     private String tenantID;
     private String payTime;
     private String appointedTime;
+    private String appointedPlace;
 
-    public VisitRecord(String houseID,String homeownerID,String tenantID,String payTime,String appointedTime){
+    public VisitRecord(String houseID,String homeownerID,String tenantID,String payTime,String appointedTime,String appointedPlace){
         this.houseID=houseID;
         this.homeownerID=homeownerID;
         this.tenantID=tenantID;
         this.payTime=payTime;
         this.appointedTime=appointedTime;
+        this.appointedPlace=appointedPlace;
     }
     //Construct by Communication Authority
-    public VisitRecord(String houseID,CommunicationAuthority communicationAuthority,String payTime,String appointedTime){
-        this(houseID,communicationAuthority.getHomeownerID(),communicationAuthority.getTenantID(),payTime,appointedTime);
+    public VisitRecord(String houseID,CommunicationAuthority communicationAuthority,String payTime,String appointedTime,String appointedPlace){
+        this(houseID,communicationAuthority.getHomeownerID(),communicationAuthority.getTenantID(),payTime,appointedTime,appointedPlace);
     }
 
 

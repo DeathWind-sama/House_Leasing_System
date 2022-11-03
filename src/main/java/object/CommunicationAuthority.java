@@ -4,12 +4,16 @@ package object;
  * 付费后，生成此项并放入看房申请表中
  */
 public class CommunicationAuthority {
-    private String homeownerID;
-    private String tenantID;
-
     private String authorityID;
 
+    private String homeownerID;
+    private String tenantID;
     private String houseID;
+
+    private String appointedTime="";
+    private String appointedPlace="";
+
+    private boolean isHomeownerModifyAvailable=false;//whether it's homeowner's turn to decide
 
 
     public CommunicationAuthority(String homeownerID,String tenantID,String authorityID,String houseID){
@@ -34,4 +38,18 @@ public class CommunicationAuthority {
     public String getAuthorityID(){return authorityID;}
 
     public String getHouseID(){return houseID;}
+
+    //set
+
+    public void setAppointedPlace(String appointedPlace) {
+        this.appointedPlace = appointedPlace;
+    }
+
+    public void setAppointedTime(String appointedTime) {
+        this.appointedTime = appointedTime;
+    }
+
+    public void setHomeownerModifyAvailable(boolean homeownerModifyAvailable) {
+        isHomeownerModifyAvailable = homeownerModifyAvailable;
+    }
 }
