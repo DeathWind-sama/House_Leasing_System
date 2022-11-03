@@ -25,7 +25,7 @@ import java.util.Objects;
 public class ExpenseSheetServlet extends HttpServlet {
     //set price
     public static final double registerHousePrice=20.5;
-    public static final double communicationPrice=20.5;
+    public static final double communicationPrice=5.24;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
