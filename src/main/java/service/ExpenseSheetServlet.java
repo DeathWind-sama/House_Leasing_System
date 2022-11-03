@@ -6,6 +6,7 @@ import dao.ServiceToDaoRealization;
 import object.CommunicationAuthority;
 import object.ExpenseSheet;
 import object.House;
+import object.People;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -56,7 +57,9 @@ public class ExpenseSheetServlet extends HttpServlet {
         String id = request.getParameter("id");
         //search
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
-        boolean isSucceed = serviceToDaoInterface.getOwnExpenseSheets(id, sheets);
+
+        People people=new People(id);//-------temp--------
+        boolean isSucceed = serviceToDaoInterface.getOwnExpenseSheets(people, sheets);
 
         //没有满足要求的房子
         if (sheets.size() == 0) {
