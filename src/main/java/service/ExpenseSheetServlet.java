@@ -96,6 +96,7 @@ public class ExpenseSheetServlet extends HttpServlet {
             if(isHomeowner){
                 serviceToDaoInterface.unlockHouse(expenseSheet);
             }else{
+                //通过houseID找到homeownerID
                 House house=new House();
                 serviceToDaoInterface.getHouse(houseID,house);
                 String homeownerID=house.getOwnerID();

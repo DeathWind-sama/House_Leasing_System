@@ -1,12 +1,24 @@
 package service;
 
+import com.alibaba.fastjson2.JSON;
+import dao.ServiceToDaoInterface;
+import dao.ServiceToDaoRealization;
+import object.CommunicationAuthority;
+import object.ExpenseSheet;
+import object.People;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
+/**
+ * searchCommunication: 通过ID找到该人的所有CA
+ */
 @WebServlet(name = "CommunicationManager", value = "/CommunicationManager")
 public class CommunicationAuthorityServlet extends HttpServlet {
     @Override
@@ -30,5 +42,27 @@ public class CommunicationAuthorityServlet extends HttpServlet {
         }
     }
 
+    private void searchCommunication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("searchCommunication");
+        ArrayList<CommunicationAuthority> communicationAuthorities = new ArrayList<>();//result
+
+        String id = request.getParameter("id");
+
+        //search
+        ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
+        boolean isSucceed = serviceToDaoInterface.getOwnCommunicationAuthorities(id, communicationAuthorities);
+
+        //没有满足要求的房子
+        if (communicationAuthorities.size() == 0) {
+            response.setStatus(404);
+        }
+
+        String responseJSStr = JSON.toJSONString(communicationAuthorities);
+        System.out.println("Response JS: " + responseJSStr);
+
+        //response
+        PrintWriter responseWriter = response.getWriter();
+        responseWriter.write(responseJSStr);
+    }
 
 }

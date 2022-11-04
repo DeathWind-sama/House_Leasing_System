@@ -5,6 +5,7 @@ import dao.ServiceToDaoInterface;
 import dao.ServiceToDaoRealization;
 import object.ExpenseSheet;
 import object.Homeowner;
+import object.People;
 import object.Tenant;
 import service.ExpenseSheetServlet;
 
@@ -29,9 +30,12 @@ public class TempTry {
 //    }
 
     public static void main(String[] args) {
-        ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
-        ExpenseSheet expenseSheet = new ExpenseSheet("ownerID", true,
-                ExpenseSheetServlet.registerHousePrice, "houseID");
-        serviceToDaoInterface.addExpenseSheet(expenseSheet);
+        People people=new People();
+        tf(people);
+        System.out.println(people.getID());
+    }
+
+    static void tf(People people){
+        people=new People("123");
     }
 }
