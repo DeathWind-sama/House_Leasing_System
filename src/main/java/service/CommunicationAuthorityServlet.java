@@ -17,13 +17,11 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
- * searchCommunication: 通过ID找到该人的所有CA
+ * searchCommunication: 通过ID找到该人的所有CA。注意，CA的isHomeownerModifyAvailable为false时，房主无法对它进行更改；为true时，租赁者无法对它进行更改。这须在前端有体现
+ * modifyMessage 通过communicationid确定CA，提供time和place来修改对应值，通过ishomeowner确保拥有修改权限以保障安全。若无权限，则404
  * confirmAgreement: 不论是谁，按下确定后调用，通过communicationid进行确认以生成看房记录
  */
 @WebServlet(name = "CommunicationManager", value = "/CommunicationManager")
@@ -73,7 +71,33 @@ public class CommunicationAuthorityServlet extends HttpServlet {
     }
 
     private void modifyMessage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("modifyMessage");
+        JSONObject responseJS=new JSONObject();
 
+        String communicationID=request.getParameter("communicationid");
+        boolean isHomeowner= Objects.equals(request.getParameter("ishomeowner"), "true");
+
+        ServiceToDaoInterface serviceToDaoInterface=new ServiceToDaoRealization();
+        CommunicationAuthority communicationAuthority=serviceToDaoInterface.getCommunicationAuthority(communicationID);
+
+        //判断权限
+        if(isHomeowner != communicationAuthority.getIsHomeownerModifyAvailable()){
+            response.setStatus(404);//无权修改
+            responseJS.put("result", "false");
+        }else{
+            //修改内容（权限转换由modifyCommunicationAuthority自动完成）
+            String appointedTime=request.getParameter("time");
+            String appointedPlace=request.getParameter("place");
+            serviceToDaoInterface.modifyCommunicationAuthority(communicationID,appointedTime,appointedPlace);
+
+            responseJS.put("result", "true");
+        }
+
+        //response
+        String responseJSStr= responseJS.toJSONString();
+        System.out.println("Response JS: " + responseJSStr);
+        PrintWriter responseWriter = response.getWriter();
+        responseWriter.write(responseJSStr);
     }
 
     private void confirmAgreement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

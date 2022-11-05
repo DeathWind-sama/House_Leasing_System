@@ -47,6 +47,10 @@ public class CommunicationAuthority {
         return appointedPlace;
     }
 
+    public boolean getIsHomeownerModifyAvailable(){
+        return isHomeownerModifyAvailable;
+    }
+
     //set
 
     public void setAppointedPlace(String appointedPlace) {
