@@ -39,6 +39,14 @@ public class CommunicationAuthority {
 
     public String getHouseID(){return houseID;}
 
+    public String getAppointedTime() {
+        return appointedTime;
+    }
+
+    public String getAppointedPlace() {
+        return appointedPlace;
+    }
+
     //set
 
     public void setAppointedPlace(String appointedPlace) {

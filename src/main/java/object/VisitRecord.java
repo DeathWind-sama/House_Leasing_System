@@ -29,8 +29,9 @@ public class VisitRecord {
         this.appointedPlace=appointedPlace;
     }
     //Construct by Communication Authority
-    public VisitRecord(String houseID,CommunicationAuthority communicationAuthority,String payTime,String appointedTime,String appointedPlace){
-        this(houseID,communicationAuthority.getHomeownerID(),communicationAuthority.getTenantID(),payTime,appointedTime,appointedPlace);
+    public VisitRecord(CommunicationAuthority communicationAuthority,String payTime){
+        this(communicationAuthority.getHouseID(),communicationAuthority.getHomeownerID(),communicationAuthority.getTenantID(),payTime,
+                communicationAuthority.getAppointedTime(),communicationAuthority.getAppointedPlace());
     }
 
 
