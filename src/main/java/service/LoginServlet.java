@@ -44,14 +44,14 @@ public class LoginServlet extends HttpServlet {
             Method method = getClass().getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
             method.invoke(this, request, response);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            response.sendError(404,"Failed To Call Method: "+methodName);
-            throw new RuntimeException("ERROR: Failed To Call Method: "+methodName);
+            response.sendError(404, "Failed To Call Method: " + methodName);
+            throw new RuntimeException("ERROR: Failed To Call Method: " + methodName);
         }
     }
 
-    private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("login");
-        JSONObject responseJS=new JSONObject();
+        JSONObject responseJS = new JSONObject();
 
         String id = request.getParameter("id");
         String password = request.getParameter("password");
@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
 
         //login
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
-        boolean isSuccess = serviceToDaoInterface.matchPeopleToLogin(id, password,isHomeowner);
+        boolean isSuccess = serviceToDaoInterface.matchPeopleToLogin(id, password, isHomeowner);
 
         if (isSuccess) {
             System.out.println("Login Succeed.");
@@ -75,7 +75,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         //response
-        String responseJSStr= responseJS.toJSONString();
+        String responseJSStr = responseJS.toJSONString();
         System.out.println("Response JS: " + responseJSStr);
         PrintWriter responseWriter = response.getWriter();
         responseWriter.write(responseJSStr);
