@@ -66,10 +66,9 @@ public class ExpenseSheetServlet extends HttpServlet {
             response.setStatus(404);
         }
 
+        //response
         String responseJSStr = JSON.toJSONString(sheets);
         System.out.println("Response JS: " + responseJSStr);
-
-        //response
         PrintWriter responseWriter = response.getWriter();
         responseWriter.write(responseJSStr);
     }

@@ -78,6 +78,7 @@ public class CommunicationAuthorityServlet extends HttpServlet {
 
     private void confirmAgreement(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("confirmAgreement");
+        JSONObject responseJS=new JSONObject();
 
         String communicationID=request.getParameter("communicationid");
 
@@ -91,13 +92,13 @@ public class CommunicationAuthorityServlet extends HttpServlet {
         VisitRecord visitRecord=new VisitRecord(communicationAuthority,payTime);
         serviceToDaoInterface.addVisitRecord(visitRecord);
 
-        JSONObject responseJS=new JSONObject();
         responseJS.put("result", "true");
-        String reponseJSStr= responseJS.toJSONString();
 
         //response
+        String responseJSStr= responseJS.toJSONString();
+        System.out.println("Response JS: " + responseJSStr);
         PrintWriter responseWriter = response.getWriter();
-        responseWriter.write(reponseJSStr);
+        responseWriter.write(responseJSStr);
     }
 
     //tools

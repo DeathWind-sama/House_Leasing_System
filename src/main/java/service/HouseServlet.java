@@ -1,6 +1,7 @@
 package service;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import dao.ServiceToDaoInterface;
 import dao.ServiceToDaoRealization;
 import object.ExpenseSheet;
@@ -74,17 +75,16 @@ public class HouseServlet extends HttpServlet {
             response.setStatus(404);
         }
 
+        //response
         String responseJSStr = JSON.toJSONString(houses);
         System.out.println("Response JS: " + responseJSStr);
-
-        //response
         PrintWriter responseWriter = response.getWriter();
         responseWriter.write(responseJSStr);
     }
 
     private void registerHouse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("registerHouse");
-        Map<String, String> responseMap = new HashMap<>();
+        JSONObject responseJS=new JSONObject();
 
         String houseID=request.getParameter("houseID");
         String ownerID=request.getParameter("ownerID");
@@ -101,20 +101,19 @@ public class HouseServlet extends HttpServlet {
 
         if (isSuccess) {
             System.out.println("Succeed.");
-            responseMap.put("result", "true");
+            responseJS.put("result", "true");
 
             //添加费用单
             ExpenseSheet expenseSheet=new ExpenseSheet(ownerID,true,ExpenseSheetServlet.registerHousePrice,houseID);
             serviceToDaoInterface.addExpenseSheet(expenseSheet);
         } else {
             System.out.println("Fail.");
-            responseMap.put("result", "false");
+            responseJS.put("result", "false");
         }
 
-        String responseJSStr = JSON.toJSONString(responseMap);
-        System.out.println("Response JS: " + responseJSStr);
-
         //response
+        String responseJSStr = JSON.toJSONString(responseJS);
+        System.out.println("Response JS: " + responseJSStr);
         PrintWriter responseWriter = response.getWriter();
         responseWriter.write(responseJSStr);
     }
