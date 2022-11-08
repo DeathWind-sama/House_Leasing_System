@@ -23,6 +23,7 @@ import java.util.Objects;
 /**
  * searchHouse: 查找房子，自己的或所有的。searchtype为"own"时返回id房主的所有房子；为"all"时返回num个所有可被检索的房子信息。没找到就404
  * registerHouse: 登记房子
+ * delHouse: 删除房子。houseid
  */
 @WebServlet(name = "HouseManager", value = "/HouseManager")
 public class HouseServlet extends HttpServlet {
@@ -110,6 +111,25 @@ public class HouseServlet extends HttpServlet {
             System.out.println("Fail.");
             responseJS.put("result", "false");
         }
+
+        //response
+        String responseJSStr = JSON.toJSONString(responseJS);
+        System.out.println("Response JS: " + responseJSStr);
+        PrintWriter responseWriter = response.getWriter();
+        responseWriter.write(responseJSStr);
+    }
+
+    private void delHouse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("delHouse");
+        JSONObject responseJS=new JSONObject();
+
+        String houseID=request.getParameter("houseid");
+        //search
+        ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
+
+        boolean isSuccess = serviceToDaoInterface.delHouse(houseID);
+
+        responseJS.put("result", "true");
 
         //response
         String responseJSStr = JSON.toJSONString(responseJS);
