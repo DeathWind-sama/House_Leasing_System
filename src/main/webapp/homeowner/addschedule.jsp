@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <title>房屋租赁系统</title>
-    <link rel="stylesheet"  href="../text2/css/common.css"/>
+    <link rel="stylesheet"  href="../css/common.css"/>
     <link rel="stylesheet"  href="../css/main.css"/>
     <script type="text/javascript" src="../js/libs/modernizr.min.js"></script>
     <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
