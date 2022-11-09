@@ -28,15 +28,13 @@ public class PeopleMessageServlet extends HttpServlet {
         System.out.println("---Servlet: POST to PeopleMessage---");
         response.setContentType("text/html;charset=utf-8");
 
-        String identity = request.getParameter("identity");
+        boolean isHomeowner = Objects.equals(request.getParameter("identity"), "homeowner");
         String id = request.getParameter("id");
 
-        People people=new People();
-
         ServiceToDaoInterface serviceToDaoInterface=new ServiceToDaoRealization();
-        boolean isSucceed=serviceToDaoInterface.getPeople(id, Objects.equals(identity, "homeowner"),people);
+        People people=serviceToDaoInterface.getPeople(id, isHomeowner);
 
-        if(isSucceed){
+        if(people!=null){
             System.out.println("Succeed");
 
             String responseJSStr = toJSONString(people);
