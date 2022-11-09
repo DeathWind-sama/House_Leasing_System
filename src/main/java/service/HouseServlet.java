@@ -6,6 +6,7 @@ import dao.ServiceToDaoInterface;
 import dao.ServiceToDaoRealization;
 import object.ExpenseSheet;
 import object.House;
+import object.People;
 import object.enums.HouseTypeEnum;
 
 import javax.servlet.*;
@@ -105,7 +106,8 @@ public class HouseServlet extends HttpServlet {
             responseJS.put("result", "true");
 
             //添加费用单
-            ExpenseSheet expenseSheet=new ExpenseSheet(ownerID,true,ExpenseSheetServlet.registerHousePrice,houseID);
+            People homeowner = serviceToDaoInterface.getPeople(ownerID,true);
+            ExpenseSheet expenseSheet=new ExpenseSheet(ownerID,homeowner.getName(),true,ExpenseSheetServlet.registerHousePrice,houseID);
             serviceToDaoInterface.addExpenseSheet(expenseSheet);
         } else {
             System.out.println("Fail.");

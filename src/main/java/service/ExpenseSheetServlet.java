@@ -91,8 +91,8 @@ public class ExpenseSheetServlet extends HttpServlet {
 
         if(isSucceed){
             //解锁房屋或者增加交流许可
-            ExpenseSheet expenseSheet=new ExpenseSheet(payerID,isHomeowner,0,houseID);
-            if(isHomeowner){
+            if(isHomeowner){//-----------------bad
+                ExpenseSheet expenseSheet=new ExpenseSheet(payerID,"",true,0,houseID);
                 serviceToDaoInterface.unlockHouse(expenseSheet);
             }else{
                 //通过houseID找到homeownerID

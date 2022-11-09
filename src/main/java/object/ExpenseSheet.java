@@ -10,18 +10,17 @@ public class ExpenseSheet {
 
     private String houseID;
 
-    public ExpenseSheet(String payerID,boolean isHomeowner,double payAmount,String houseID){
+    public ExpenseSheet(String payerID,String payerName,boolean isHomeowner,double payAmount,String houseID){
         this.payerID=payerID;
+        this.payerName=payerName;
         this.isHomeowner =isHomeowner;
         this.payAmount=payAmount;
         this.houseID=houseID;
     }
     public ExpenseSheet(String sheetID,String payerID,String payerName,boolean isHomeowner,double payAmount,boolean isPayed,String houseID){
-        this(payerID,isHomeowner,payAmount,houseID);
-        this.payerName=payerName;
+        this(payerID,payerName,isHomeowner,payAmount,houseID);
         this.sheetID=sheetID;
         this.isPayed=isPayed;
-
     }
 
 

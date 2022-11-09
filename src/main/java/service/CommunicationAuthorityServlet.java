@@ -20,7 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * searchCommunication: 通过ID找到该人的所有CA。注意，CA的isHomeownerModifyAvailable为false时，房主无法对它进行更改；为true时，租赁者无法对它进行更改。这须在前端有体现
+ * addCommunication: 租赁者点击房屋申请新建交流许可
+ * searchCommunication: 通过id找到该人的所有CA。注意，CA的isHomeownerModifyAvailable为false时，房主无法对它进行更改；为true时，租赁者无法对它进行更改。这须在前端有体现
  * modifyMessage 通过communicationid确定CA，提供time和place来修改对应值，通过ishomeowner确保拥有修改权限以保障安全。若无权限，则404
  * confirmAgreement: 不论是谁，按下确定后调用，通过communicationid进行确认以生成看房记录
  */
@@ -45,6 +46,19 @@ public class CommunicationAuthorityServlet extends HttpServlet {
             response.sendError(404,"Failed To Call Method: "+methodName);
             throw new RuntimeException("ERROR: Failed To Call Method: "+methodName);
         }
+    }
+
+    private void addCommunication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("addCommunication");
+
+        String id=request.getParameter("id");
+        String houseID=request.getParameter("houseid");
+
+        ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
+        People tenant = serviceToDaoInterface.getPeople(id,false);
+        //添加费用单
+        ExpenseSheet expenseSheet=new ExpenseSheet(id,tenant.getName(),false,ExpenseSheetServlet.communicationPrice,houseID);
+        serviceToDaoInterface.addExpenseSheet(expenseSheet);
     }
 
     private void searchCommunication(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
