@@ -44,9 +44,11 @@ public class ExpenseSheetServlet extends HttpServlet {
         try {
             Method method = getClass().getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
             method.invoke(this, request, response);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalAccessException e) {
             response.sendError(404,"Failed To Call Method: "+methodName);
             throw new RuntimeException("ERROR: Failed To Call Method: "+methodName);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e.getTargetException());
         }
     }
 
