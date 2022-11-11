@@ -665,7 +665,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         boolean isSuccess=true;
         int s=0;
         ResultSet resultSet=null;
-        String sql="select * FROM house where house.isLeased=TRUE ";
+        String sql="select * FROM house where house.isAbleSearched=TRUE ";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = DBUtils.connection.prepareStatement(sql);
@@ -707,7 +707,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         boolean isSuccess=true;
 
         ResultSet resultSet=null;
-        String sql="select * FROM house where house.isLeased=TRUE ";
+        String sql="select * FROM house where house.isAbleSearched=TRUE ";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = DBUtils.connection.prepareStatement(sql);
