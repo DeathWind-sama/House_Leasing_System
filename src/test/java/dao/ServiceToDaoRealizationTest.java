@@ -162,8 +162,7 @@ public class ServiceToDaoRealizationTest {
 
     @Test
     public void getHouse() {
-        House house = null;
-        boolean ok = serviceToDaoRealization.getHouse("128297", house);
+        House house = serviceToDaoRealization.getHouse("128297");
     }
 
     @Test
@@ -183,8 +182,7 @@ public class ServiceToDaoRealizationTest {
 
     @Test
     public void getPeople() {
-        People people = null;
-        boolean ok = serviceToDaoRealization.getPeople("13124", false, people); //查询租赁者Jack,true
+        People people = serviceToDaoRealization.getPeople("13124", false); //查询租赁者Jack,true
 //        boolean ok=s.getPeople("2839249",true,people); //查询房东Rose,true
 //        boolean ok=s.getPeople("2839249",false,people); //查询不到，false*/
     }
