@@ -71,7 +71,7 @@ public class CommunicationAuthorityServlet extends HttpServlet {
 
         //search
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
-        boolean isSucceed = serviceToDaoInterface.getOwnCommunicationAuthorities(id, communicationAuthorities);
+        communicationAuthorities = serviceToDaoInterface.getOwnCommunicationAuthorities(id);
 
         //没有满足要求的房子
         if (communicationAuthorities.size() == 0) {

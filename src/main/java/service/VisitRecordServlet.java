@@ -34,7 +34,7 @@ public class VisitRecordServlet extends HttpServlet {
         String id = request.getParameter("id");
         //search
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
-        boolean isSuccess = serviceToDaoInterface.getOwnVisitRecords(id, visitRecords);
+        visitRecords = serviceToDaoInterface.getOwnVisitRecords(id);
 
         //没有满足要求的看房记录
         if (visitRecords.size() == 0) {

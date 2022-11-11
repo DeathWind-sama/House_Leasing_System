@@ -19,7 +19,7 @@ public class ServiceToDaoRealizationTest {
         isSucceed = serviceToDaoRealization.registerPeople(homeowner, "pswLucy");
 
         Tenant tenant = new Tenant("David", "888", "NightCity", "15325256789", "2020-9-9", GenderEnum.MALE);
-        isSucceed = serviceToDaoRealization.registerPeople(homeowner, "pswDavid");
+        isSucceed = serviceToDaoRealization.registerPeople(tenant, "pswDavid");
 
         //login
         isSucceed = serviceToDaoRealization.matchPeopleToLogin("udsjkladjkladj", "dsakicdcn", true);
@@ -28,10 +28,13 @@ public class ServiceToDaoRealizationTest {
         isSucceed = serviceToDaoRealization.matchPeopleToLogin("999", "pswLucy", true);
         Assert.assertTrue(isSucceed);
 
-        isSucceed = serviceToDaoRealization.matchPeopleToLogin("888", "pswDavid", true);
+        isSucceed = serviceToDaoRealization.matchPeopleToLogin("999", "dearAdam", true);
+        Assert.assertFalse(isSucceed);
+
+        isSucceed = serviceToDaoRealization.matchPeopleToLogin("888", "pswDavid", false);
         Assert.assertTrue(isSucceed);
 
-        isSucceed = serviceToDaoRealization.matchPeopleToLogin("999", "dearAdam", true);
+        isSucceed = serviceToDaoRealization.matchPeopleToLogin("888", "pswDavid", true);
         Assert.assertFalse(isSucceed);
     }
 
@@ -61,42 +64,40 @@ public class ServiceToDaoRealizationTest {
         boolean ok = serviceToDaoRealization.delCommunicationAuthority("298497");
     }
 
-    @Test
-    public void delContract() {
-        /*测试delContract*/
-        //boolean ok=s.delContract("173282"); //没有这个ID false
-        boolean ok = serviceToDaoRealization.delContract("17382"); //删除刚刚创建的Contract true
-    }
+//    @Test
+//    public void delContract() {
+//        /*测试delContract*/
+//        //boolean ok=s.delContract("173282"); //没有这个ID false
+//        boolean ok = serviceToDaoRealization.delContract("17382"); //删除刚刚创建的Contract true
+//    }
 
-    @Test
-    public void getOwnContract() {
-        /*测试getOwnContract*/
-        ArrayList<Contract> contracts = new ArrayList<>();
-        Homeowner homeowner = new Homeowner("Jerry", "122", "华盛顿", "12832083");
-        boolean ok = serviceToDaoRealization.getOwnContract(homeowner, contracts);
-        System.out.println(contracts.get(0).getContractID()); //输出查询到的ID 17382*/
-
-    }
-
-    @Test
-    public void getContract() {
-        /*测试getContract*/
-        Contract contract = null;
-        boolean ok = serviceToDaoRealization.getContract("17382", contract);
-    }
-
-    @Test
-    public void addContract() {
-        /*测试addContract*/
-        Contract contract = new Contract("17382", "122", "1", 1831, 821, "12821313");
-        boolean ok = serviceToDaoRealization.addContract(contract);
-    }
+//    @Test
+//    public void getOwnContract() {
+//        /*测试getOwnContract*/
+//
+//        Homeowner homeowner = new Homeowner("Jerry", "122", "华盛顿", "12832083");
+//        ArrayList<Contract> contracts = serviceToDaoRealization.getOwnContracts(homeowner);
+//        System.out.println(contracts.get(0).getContractID()); //输出查询到的ID 17382*/
+//
+//    }
+//
+//    @Test
+//    public void getContract() {
+//        /*测试getContract*/
+//        Contract contract = serviceToDaoRealization.getContract("17382");
+//    }
+//
+//    @Test
+//    public void addContract() {
+//        /*测试addContract*/
+//        Contract contract = new Contract("17382", "122", "1", 1831, 821, "12821313");
+//        boolean ok = serviceToDaoRealization.addContract(contract);
+//    }
 
     @Test
     public void getOwnVisitRecords() {
         /*测试getOwnVisitRecords*/
-        ArrayList<VisitRecord> visitRecords = new ArrayList<>();
-        boolean ok = serviceToDaoRealization.getOwnVisitRecords("222", visitRecords);
+        ArrayList<VisitRecord> visitRecords = serviceToDaoRealization.getOwnVisitRecords("222");
         System.out.println(visitRecords.get(0).getTenantID());  //输出TenantID 25346*/
     }
 
@@ -112,8 +113,7 @@ public class ServiceToDaoRealizationTest {
         /* 测试getOwnCommunicationAuthorities*/
         Tenant tenant = new Tenant("Jack", "13124", "陕西", "13812742974", "2002-01-03", GenderEnum.FEMALE);
         Homeowner homeowner = new Homeowner("Rose", "2839249", "陕西", "218392743");
-        ArrayList<CommunicationAuthority> communicationAuthorities = new ArrayList<>();
-        boolean ok = serviceToDaoRealization.getOwnCommunicationAuthorities("13124", communicationAuthorities);
+        ArrayList<CommunicationAuthority> communicationAuthorities = serviceToDaoRealization.getOwnCommunicationAuthorities("13124");
         System.out.println(communicationAuthorities.get(0).getAuthorityID());
     }
 
@@ -125,9 +125,8 @@ public class ServiceToDaoRealizationTest {
 
     @Test
     public void getOwnExpenseSheets() {
-        ArrayList<ExpenseSheet> expenseSheets = new ArrayList<>();
         Tenant tenant = new Tenant("Jack", "13124", "陕西", "13812742974", "2002-01-03", GenderEnum.FEMALE);
-        boolean ok = serviceToDaoRealization.getOwnExpenseSheets(tenant, expenseSheets);
+        ArrayList<ExpenseSheet> expenseSheets= serviceToDaoRealization.getOwnExpenseSheets(tenant);
     }
 
     @Test
@@ -138,8 +137,7 @@ public class ServiceToDaoRealizationTest {
 
     @Test
     public void unlockHouse() {
-        ExpenseSheet expenseSheet = new ExpenseSheet("82932", "2378344", "Jack", false, 238237, false, "1212736");
-        boolean ok = serviceToDaoRealization.unlockHouse(expenseSheet);
+        boolean ok = serviceToDaoRealization.unlockHouse("1212736");
     }
 
     @Test
@@ -148,15 +146,13 @@ public class ServiceToDaoRealizationTest {
 
     @Test
     public void getAllPayedHouses() {
-        ArrayList<House> houses = new ArrayList<>();
-        boolean ok = serviceToDaoRealization.getAllPayedHouses(houses);
+        ArrayList<House> houses = serviceToDaoRealization.getAllPayedHouses();
 //        boolean ok=s.getSomePayedHouses(2,houses);
     }
 
     @Test
     public void getOwnHouses() {
-        ArrayList<House> houses = new ArrayList<>();
-        boolean ok = serviceToDaoRealization.getOwnHouses("122", houses); //true
+        ArrayList<House> houses =serviceToDaoRealization.getOwnHouses("122"); //true
 //        boolean ok=s.getOwnHouses("21898",houses); //false*/
     }
 

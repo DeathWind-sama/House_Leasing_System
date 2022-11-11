@@ -186,10 +186,11 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public boolean getOwnContract(People people, ArrayList<Contract> contractArrayListResult)
+    public ArrayList<Contract> getOwnContracts(People people)
     {
         DBUtils.init_connection();
 
+        ArrayList<Contract> contractArrayListResult=new ArrayList<>();
         //默认查询成功
         boolean isSuccess=true;
 
@@ -224,14 +225,15 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         DBUtils.close();
 
-        return isSuccess;
+        return contractArrayListResult;
     }
 
     @Override
-    public boolean getContract(String contractID, Contract contractResult)
+    public Contract getContract(String contractID)
     {
         DBUtils.init_connection();
 
+        Contract contractResult=null;
         //默认查询成功
         boolean isSuccess=true;
 
@@ -264,7 +266,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         DBUtils.close();
 
-        return isSuccess;
+        return contractResult;
     }
 
     @Override
@@ -316,10 +318,11 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public boolean getOwnVisitRecords(String ID, ArrayList<VisitRecord> visitRecordArrayList)
+    public ArrayList<VisitRecord> getOwnVisitRecords(String ID)
     {
         DBUtils.init_connection();
 
+        ArrayList<VisitRecord> visitRecordArrayList=new ArrayList<>();
         //默认查询成功
         boolean isSuccess=true;
 
@@ -356,7 +359,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         DBUtils.close();
 
-        return isSuccess;
+        return visitRecordArrayList;
     }
 
     @Override
@@ -391,10 +394,11 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public boolean getOwnCommunicationAuthorities(String ID, ArrayList<CommunicationAuthority> communicationAuthorityArrayListResult)
+    public ArrayList<CommunicationAuthority> getOwnCommunicationAuthorities(String ID)
     {
         DBUtils.init_connection();
 
+        ArrayList<CommunicationAuthority> communicationAuthorityArrayListResult=new ArrayList<>();
         //默认查询成功
         boolean isSuccess=true;
 
@@ -431,7 +435,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         DBUtils.close();
 
-        return isSuccess;
+        return communicationAuthorityArrayListResult;
     }
 
     @Override
@@ -528,10 +532,11 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public boolean getOwnExpenseSheets(People people, ArrayList<ExpenseSheet> expenseSheetArrayListResult)
+    public ArrayList<ExpenseSheet> getOwnExpenseSheets(People people)
     {
         DBUtils.init_connection();
 
+        ArrayList<ExpenseSheet> expenseSheetArrayListResult=new ArrayList<>();
         //默认查询成功
         boolean isSuccess=true;
 
@@ -568,7 +573,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         DBUtils.close();
 
-        return isSuccess;
+        return expenseSheetArrayListResult;
     }
 
     @Override
@@ -630,7 +635,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public boolean unlockHouse(ExpenseSheet expenseSheet)
+    public boolean unlockHouse(String houseID)
     {
         //默认修改失败
         boolean isSuccess=false;
@@ -640,7 +645,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = DBUtils.connection.prepareStatement(sql);
-            preparedStatement.setString(1,expenseSheet.getHouseID());
+            preparedStatement.setString(1,houseID);
 
             //处理返回结果集
             int result=preparedStatement.executeUpdate();
@@ -657,10 +662,11 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public boolean getSomePayedHouses(int quantity, ArrayList<House> houseArrayListResult)
+    public ArrayList<House> getSomePayedHouses(int quantity)
     {
         DBUtils.init_connection();
 
+        ArrayList<House> houseArrayListResult=new ArrayList<>();
         //默认查询成功
         boolean isSuccess=true;
         int s=0;
@@ -695,14 +701,15 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         DBUtils.close();
 
-        return isSuccess;
+        return houseArrayListResult;
     }
 
     @Override
-    public boolean getAllPayedHouses(ArrayList<House> houseArrayListResult)
+    public ArrayList<House> getAllPayedHouses()
     {
         DBUtils.init_connection();
 
+        ArrayList<House> houseArrayListResult=new ArrayList<>();
         //默认查询成功
         boolean isSuccess=true;
 
@@ -736,13 +743,14 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         DBUtils.close();
 
-        return isSuccess;
+        return houseArrayListResult;
     }
 
     @Override
-    public boolean getOwnHouses(String ID, ArrayList<House> houseArrayListResult) {
+    public ArrayList<House> getOwnHouses(String ID) {
         DBUtils.init_connection();
 
+        ArrayList<House> houseArrayListResult=new ArrayList<>();
         //默认查询成功
         boolean isSuccess=true;
 
@@ -776,16 +784,17 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         DBUtils.close();
 
-        return isSuccess;
+        return houseArrayListResult;
     }
 
     @Override
     public House getHouse(String houseID) {
         DBUtils.init_connection();
 
+        House house=null;
         //默认查询成功
         boolean isSuccess=true;
-        House house=null;
+
         ResultSet resultSet=null;
         String sql="select * FROM house where house.houseID=? ";
         PreparedStatement preparedStatement = null;

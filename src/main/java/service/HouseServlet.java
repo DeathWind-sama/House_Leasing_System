@@ -60,7 +60,7 @@ public class HouseServlet extends HttpServlet {
             String id = request.getParameter("id");
             //search
             ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
-            boolean isSuccess = serviceToDaoInterface.getOwnHouses(id, houses);
+            houses = serviceToDaoInterface.getOwnHouses(id);
         } else {
             //get num
             int num = 0;
@@ -71,7 +71,7 @@ public class HouseServlet extends HttpServlet {
             }
             //search
             ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
-            boolean isSuccess = serviceToDaoInterface.getSomePayedHouses(num, houses);
+            houses = serviceToDaoInterface.getSomePayedHouses(num);
         }
 
         //没有满足要求的房子

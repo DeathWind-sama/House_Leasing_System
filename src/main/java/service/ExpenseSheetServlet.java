@@ -61,7 +61,7 @@ public class ExpenseSheetServlet extends HttpServlet {
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
 
         People people=new People(id);//-------temp--------
-        boolean isSucceed = serviceToDaoInterface.getOwnExpenseSheets(people, sheets);
+        sheets = serviceToDaoInterface.getOwnExpenseSheets(people);
 
         //没有满足要求的房子
         if (sheets.size() == 0) {
@@ -94,8 +94,7 @@ public class ExpenseSheetServlet extends HttpServlet {
         if(isSucceed){
             //解锁房屋或者增加交流许可
             if(isHomeowner){//-----------------bad
-                ExpenseSheet expenseSheet=new ExpenseSheet(payerID,"",true,0,houseID);
-                serviceToDaoInterface.unlockHouse(expenseSheet);
+                serviceToDaoInterface.unlockHouse(houseID);
             }else{
                 //通过houseID找到homeownerID
                 House house=serviceToDaoInterface.getHouse(houseID);

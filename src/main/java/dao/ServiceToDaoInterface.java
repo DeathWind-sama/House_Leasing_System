@@ -21,36 +21,36 @@ public interface ServiceToDaoInterface {
     boolean addHouse(House house);//添加。要生成房屋的唯一识别码。房子默认设为不可检索
     boolean delHouse(String houseID);//删除
     House getHouse(String houseID);//查询
-    boolean getOwnHouses(String ID,ArrayList<House> houseArrayListResult);//获取一个房主登记的所有房子
+    ArrayList<House> getOwnHouses(String ID);//获取一个房主登记的所有房子
     //    boolean getAllHouses(ArrayList<House> houseArrayList);//返回所有房子（管理员权限）
-    boolean getAllPayedHouses(ArrayList<House> houseArrayListResult);//返回可被检索到的所有房子
-    boolean getSomePayedHouses(int quantity,ArrayList<House> houseArrayListResult);//返回quantity个可被检索到的房子
-    boolean unlockHouse(ExpenseSheet expenseSheet);//通过费用单信息将对应房屋设为可被检索
+    ArrayList<House> getAllPayedHouses();//返回可被检索到的所有房子
+    ArrayList<House> getSomePayedHouses(int quantity);//返回quantity个可被检索到的房子
+    boolean unlockHouse(String houseID);//通过费用单信息将对应房屋设为可被检索
 
     //Expense Sheet
     boolean addExpenseSheet(ExpenseSheet expenseSheet);//添加。要生成唯一识别码
     boolean delExpenseSheet(String sheetID);//删除
-    boolean getOwnExpenseSheets(People people,ArrayList<ExpenseSheet> expenseSheetArrayListResult);//返回一个人的所有账单，无论有没有付款
+    ArrayList<ExpenseSheet> getOwnExpenseSheets(People people);//返回一个人的所有账单，无论有没有付款
     //    boolean getAllExpenseSheets(ArrayList<ExpenseSheet> expenseSheetArrayList);//返回所有账单（管理员权限）
     boolean payExpenseSheet(String sheetID);//付钱了，修改isPayed
 
     //Communication Authority
     boolean addCommunicationAuthority(CommunicationAuthority communicationAuthority);//添加
     boolean delCommunicationAuthority(String authorityID);//删除
-    boolean getOwnCommunicationAuthorities(String ID,ArrayList<CommunicationAuthority> communicationAuthorityArrayListResult);//返回一个人的所有交流许可
+    ArrayList<CommunicationAuthority> getOwnCommunicationAuthorities(String ID);//返回一个人的所有交流许可
     boolean modifyCommunicationAuthority(String ID,String appointedTime,String appointedPlace);//修改时间地点并自动把权限转换
     CommunicationAuthority getCommunicationAuthority(String communicationID);
 
     //Visit Record
     boolean addVisitRecord(VisitRecord visitRecord);//添加
-    boolean getOwnVisitRecords(String ID,ArrayList<VisitRecord> visitRecordArrayList);//返回一个人的所有的看房记录
+    ArrayList<VisitRecord> getOwnVisitRecords(String ID);//返回一个人的所有的看房记录
 //    boolean getAllVisitRecord(ArrayList<VisitRecord> visitRecordArrayList);//返回所有的看房记录（管理员权限）
 
     //Contract
     boolean addContract(Contract contract);//添加。要生成唯一识别码
     boolean delContract(String contractID);//删除
-    boolean getContract(String contractID,Contract contractResult);//查询
-    boolean getOwnContract(People people,ArrayList<Contract> contractArrayListResult);//返回一个人的所有合同
+    Contract getContract(String contractID);//查询
+    ArrayList<Contract> getOwnContracts(People people);//返回一个人的所有合同
 
 
 //    boolean getAllContract(ArrayList<Contract> contractArrayList);//返回所有的合同（管理员权限）
