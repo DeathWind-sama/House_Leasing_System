@@ -13,14 +13,14 @@ public interface ServiceToDaoInterface {
     //People    注意判断两种人
     boolean matchPeopleToLogin(String ID, String psw,boolean isHomeowner);//查看是否有该用户已被登记
     boolean registerPeople(People people,String password);//注册（登记）
-    boolean getPeople(String ID,boolean isHomeowner,People peopleResult);//查询
+    People getPeople(String ID,boolean isHomeowner);//查询
 //    boolean getAllHomeowner(ArrayList<Homeowner> homeownerArrayList);//返回所有房主（管理员权限）
 //    boolean getAllTenant(ArrayList<Tenant> tenantArrayList);//返所有租赁者（管理员权限）
 
     //House
     boolean addHouse(House house);//添加。要生成房屋的唯一识别码。房子默认设为不可检索
     boolean delHouse(String houseID);//删除
-    boolean getHouse(String houseID,House houseResult);//查询
+    House getHouse(String houseID);//查询
     boolean getOwnHouses(String ID,ArrayList<House> houseArrayListResult);//获取一个房主登记的所有房子
     //    boolean getAllHouses(ArrayList<House> houseArrayList);//返回所有房子（管理员权限）
     boolean getAllPayedHouses(ArrayList<House> houseArrayListResult);//返回可被检索到的所有房子
@@ -38,6 +38,8 @@ public interface ServiceToDaoInterface {
     boolean addCommunicationAuthority(CommunicationAuthority communicationAuthority);//添加
     boolean delCommunicationAuthority(String authorityID);//删除
     boolean getOwnCommunicationAuthorities(String ID,ArrayList<CommunicationAuthority> communicationAuthorityArrayListResult);//返回一个人的所有交流许可
+    boolean modifyCommunicationAuthority(String ID,String appointedTime,String appointedPlace);//修改时间地点并自动把权限转换
+    CommunicationAuthority getCommunicationAuthority(String communicationID);
 
     //Visit Record
     boolean addVisitRecord(VisitRecord visitRecord);//添加
@@ -49,5 +51,7 @@ public interface ServiceToDaoInterface {
     boolean delContract(String contractID);//删除
     boolean getContract(String contractID,Contract contractResult);//查询
     boolean getOwnContract(People people,ArrayList<Contract> contractArrayListResult);//返回一个人的所有合同
+
+
 //    boolean getAllContract(ArrayList<Contract> contractArrayList);//返回所有的合同（管理员权限）
 }

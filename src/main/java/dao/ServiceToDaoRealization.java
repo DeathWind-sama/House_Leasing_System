@@ -435,6 +435,52 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
+    public boolean modifyCommunicationAuthority(String ID, String appointedTime, String appointedPlace) {
+        //默认修改失败
+        boolean isSuccess=false;
+        DBUtils.init_connection();
+
+        String sql_1="UPDATE communicationauthority SET appointedTime=?  WHERE authorityID=?";
+        String sql_2="UPDATE communicationauthority SET appointedPlace=?  WHERE authorityID=?";
+        String sql_3="UPDATE communicationauthority SET isHomeownerModifyAvailable=TRUE  WHERE authorityID=?";
+
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = DBUtils.connection.prepareStatement(sql_1);
+            preparedStatement.setString(1,appointedTime);
+            preparedStatement.setString(2,ID);
+            int result_1=preparedStatement.executeUpdate();
+            if(result_1==1)
+            {
+                isSuccess=true;
+            }
+
+            preparedStatement=DBUtils.connection.prepareStatement(sql_2);
+            preparedStatement.setString(1,appointedPlace);
+            preparedStatement.setString(2,ID);
+            int result_2=preparedStatement.executeUpdate();
+            if(result_2==1)
+            {
+                isSuccess=true;
+            }
+
+            preparedStatement=DBUtils.connection.prepareStatement(sql_3);
+            preparedStatement.setString(1,ID);
+            int result_3=preparedStatement.executeUpdate();
+            if(result_3==1)
+            {
+                isSuccess=true;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        DBUtils.close();
+        return isSuccess;
+    }
+
+    @Override
     public boolean addCommunicationAuthority(CommunicationAuthority communicationAuthority)
     {
         DBUtils.init_connection();
@@ -734,12 +780,12 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public boolean getHouse(String houseID, House houseResult) {
+    public House getHouse(String houseID) {
         DBUtils.init_connection();
 
         //默认查询成功
         boolean isSuccess=true;
-
+        House house=null;
         ResultSet resultSet=null;
         String sql="select * FROM house where house.houseID=? ";
         PreparedStatement preparedStatement = null;
@@ -750,16 +796,19 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
             //处理返回结果集
             resultSet=preparedStatement.executeQuery();
-            if(!resultSet.next())
+
+            if(resultSet.next())
             {
-                isSuccess=false;
+                house=new House(resultSet.getString(1),resultSet.getString(2),resultSet.getBoolean(3),resultSet.getBoolean(4),resultSet.getString(5),HouseTypeEnum.valueOf(resultSet.getString(6)),resultSet.getInt(7),resultSet.getDouble(8));
+
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
         DBUtils.close();
-        return isSuccess;
+        return house;
     }
 
     @Override
@@ -880,14 +929,14 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public boolean getPeople(String ID,boolean isHomeowner,People peopleResult)
+    public People getPeople(String ID,boolean isHomeowner)
     {
         DBUtils.init_connection();
         //默认注册成功
         boolean isSuccess=true;
 
         ResultSet resultSet=null;
-
+        People peopleResult=null;
         PreparedStatement preparedStatement = null;
         String sql_ask_1="select * FROM Tenant where Tenant.ID=?";
         String sql_ask_2="select * FROM houseowner where houseowner.ID=?";
@@ -936,6 +985,39 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             throw new RuntimeException(e);
         }
         DBUtils.close();
-        return isSuccess;
+        return peopleResult;
+    }
+
+    public CommunicationAuthority getCommunicationAuthority(String communicationID)
+    {
+        DBUtils.init_connection();
+
+        //默认查询成功
+        boolean isSuccess=true;
+        CommunicationAuthority communicationAuthority=null;
+        ResultSet resultSet=null;
+        String sql="select * FROM communicationauthority where authorityID=? ";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = DBUtils.connection.prepareStatement(sql);
+            preparedStatement.setString(1,communicationID);
+
+
+            //处理返回结果集
+            resultSet=preparedStatement.executeQuery();
+
+            if(resultSet.next())
+            {
+                communicationAuthority=new CommunicationAuthority(resultSet.getString(1),resultSet.getString(2),resultSet.getString(4),resultSet.getString(3));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        DBUtils.close();
+        return communicationAuthority;
     }
 }
+
+
