@@ -68,10 +68,11 @@ public class CommunicationAuthorityServlet extends HttpServlet {
         ArrayList<CommunicationAuthority> communicationAuthorities = new ArrayList<>();//result
 
         String id = request.getParameter("id");
+        boolean isHomeowner= Objects.equals(request.getParameter("ishomeowner"), "true");
 
         //search
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
-        communicationAuthorities = serviceToDaoInterface.getOwnCommunicationAuthorities(id);
+        communicationAuthorities = serviceToDaoInterface.getOwnCommunicationAuthorities(id,isHomeowner);
 
         //没有满足要求的房子
         if (communicationAuthorities.size() == 0) {

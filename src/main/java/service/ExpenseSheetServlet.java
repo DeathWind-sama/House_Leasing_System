@@ -57,11 +57,11 @@ public class ExpenseSheetServlet extends HttpServlet {
         ArrayList<ExpenseSheet> sheets = new ArrayList<>();//result
 
         String id = request.getParameter("id");
+        boolean isHomeowner= Objects.equals(request.getParameter("ishomeowner"), "true");
         //search
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
 
-        People people=new People(id);//-------temp--------
-        sheets = serviceToDaoInterface.getOwnExpenseSheets(people);
+        sheets = serviceToDaoInterface.getOwnExpenseSheets(id,isHomeowner);
 
         //没有满足要求的房子
         if (sheets.size() == 0) {

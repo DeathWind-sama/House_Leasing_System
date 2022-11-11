@@ -186,7 +186,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public ArrayList<Contract> getOwnContracts(People people)
+    public ArrayList<Contract> getOwnContracts(String ID,boolean isHomeowner)
     {
         DBUtils.init_connection();
 
@@ -199,11 +199,14 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         PreparedStatement preparedStatement = null;
 
         try {
-            String sql="select * FROM contract where homeownerID=? or tenantID=?";
+            String sql;
+            if(isHomeowner) {
+                sql = "select * FROM contract where homeownerID=?";
+            }else{
+                sql = "select * FROM contract where tenantID=?";
+            }
             preparedStatement = DBUtils.connection.prepareStatement(sql);
-            preparedStatement.setString(1,people.getID());
-            preparedStatement.setString(2,people.getID());
-
+            preparedStatement.setString(1,ID);
 
             //处理返回结果集
             resultSet=preparedStatement.executeQuery();
@@ -256,8 +259,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
             else
             {
-                Contract contract=new Contract(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getDouble(4),resultSet.getDouble(5),resultSet.getString(6));
-                contractResult=contract;
+                contractResult= new Contract(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getDouble(4),resultSet.getDouble(5),resultSet.getString(6));
 
             }
         } catch (SQLException e) {
@@ -318,7 +320,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public ArrayList<VisitRecord> getOwnVisitRecords(String ID)
+    public ArrayList<VisitRecord> getOwnVisitRecords(String ID,boolean isHomeowner)
     {
         DBUtils.init_connection();
 
@@ -331,10 +333,15 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         PreparedStatement preparedStatement = null;
 
         try {
-            String sql="select * FROM visitrecord where tenantID=? or homeownerID=?";
+            String sql;
+            if(isHomeowner){
+                sql="select * FROM visitrecord where homeownerID=?";
+            }else{
+                sql="select * FROM visitrecord where tenantID=?";
+            }
+
             preparedStatement = DBUtils.connection.prepareStatement(sql);
             preparedStatement.setString(1,ID);
-            preparedStatement.setString(2,ID);
 
             //处理返回结果集
             resultSet=preparedStatement.executeQuery();
@@ -394,7 +401,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public ArrayList<CommunicationAuthority> getOwnCommunicationAuthorities(String ID)
+    public ArrayList<CommunicationAuthority> getOwnCommunicationAuthorities(String ID,boolean isHomeowner)
     {
         DBUtils.init_connection();
 
@@ -407,11 +414,14 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         PreparedStatement preparedStatement = null;
 
         try {
-            String sql="select * FROM communicationauthority where tenantID=? or homeownerID=?";
+            String sql;
+            if(isHomeowner){
+                sql="select * FROM communicationauthority where homeownerID=?";
+            }else{
+                sql="select * FROM communicationauthority where tenantID=?";
+            }
             preparedStatement = DBUtils.connection.prepareStatement(sql);
             preparedStatement.setString(1,ID);
-            preparedStatement.setString(2,ID);
-
 
             //处理返回结果集
             resultSet=preparedStatement.executeQuery();
@@ -439,7 +449,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public boolean modifyCommunicationAuthority(String ID, String appointedTime, String appointedPlace) {
+    public boolean modifyCommunicationAuthority(String authorityID, String appointedTime, String appointedPlace) {
         //默认修改失败
         boolean isSuccess=false;
         DBUtils.init_connection();
@@ -452,7 +462,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         try {
             preparedStatement = DBUtils.connection.prepareStatement(sql_1);
             preparedStatement.setString(1,appointedTime);
-            preparedStatement.setString(2,ID);
+            preparedStatement.setString(2,authorityID);
             int result_1=preparedStatement.executeUpdate();
             if(result_1==1)
             {
@@ -461,7 +471,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
             preparedStatement=DBUtils.connection.prepareStatement(sql_2);
             preparedStatement.setString(1,appointedPlace);
-            preparedStatement.setString(2,ID);
+            preparedStatement.setString(2,authorityID);
             int result_2=preparedStatement.executeUpdate();
             if(result_2==1)
             {
@@ -469,7 +479,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             }
 
             preparedStatement=DBUtils.connection.prepareStatement(sql_3);
-            preparedStatement.setString(1,ID);
+            preparedStatement.setString(1,authorityID);
             int result_3=preparedStatement.executeUpdate();
             if(result_3==1)
             {
@@ -532,7 +542,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public ArrayList<ExpenseSheet> getOwnExpenseSheets(People people)
+    public ArrayList<ExpenseSheet> getOwnExpenseSheets(String ID,boolean isHomeowner)
     {
         DBUtils.init_connection();
 
@@ -545,9 +555,14 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         PreparedStatement preparedStatement = null;
 
         try {
-            String sql="select * FROM expensesheet where payerID=? ";
+            String sql;
+            if(isHomeowner){
+                sql="select * FROM communicationauthority where homeownerID=?";
+            }else{
+                sql="select * FROM communicationauthority where tenantID=?";
+            }
             preparedStatement = DBUtils.connection.prepareStatement(sql);
-            preparedStatement.setString(1,people.getID());
+            preparedStatement.setString(1,ID);
 
 
             //处理返回结果集

@@ -32,9 +32,10 @@ public class VisitRecordServlet extends HttpServlet {
         ArrayList<VisitRecord> visitRecords = new ArrayList<>();//result
 
         String id = request.getParameter("id");
+        boolean isHomeowner= Objects.equals(request.getParameter("ishomeowner"), "true");
         //search
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
-        visitRecords = serviceToDaoInterface.getOwnVisitRecords(id);
+        visitRecords = serviceToDaoInterface.getOwnVisitRecords(id,isHomeowner);
 
         //没有满足要求的看房记录
         if (visitRecords.size() == 0) {

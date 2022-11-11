@@ -97,8 +97,8 @@ public class ServiceToDaoRealizationTest {
     @Test
     public void getOwnVisitRecords() {
         /*测试getOwnVisitRecords*/
-        ArrayList<VisitRecord> visitRecords = serviceToDaoRealization.getOwnVisitRecords("222");
-        System.out.println(visitRecords.get(0).getTenantID());  //输出TenantID 25346*/
+        ArrayList<VisitRecord> visitRecords = serviceToDaoRealization.getOwnVisitRecords("222",false);
+        System.out.println(visitRecords);  //输出TenantID 25346*/
     }
 
     @Test
@@ -113,7 +113,7 @@ public class ServiceToDaoRealizationTest {
         /* 测试getOwnCommunicationAuthorities*/
         Tenant tenant = new Tenant("Jack", "13124", "陕西", "13812742974", "2002-01-03", GenderEnum.FEMALE);
         Homeowner homeowner = new Homeowner("Rose", "2839249", "陕西", "218392743");
-        ArrayList<CommunicationAuthority> communicationAuthorities = serviceToDaoRealization.getOwnCommunicationAuthorities("13124");
+        ArrayList<CommunicationAuthority> communicationAuthorities = serviceToDaoRealization.getOwnCommunicationAuthorities("13124",false);
         System.out.println(communicationAuthorities.get(0).getAuthorityID());
     }
 
@@ -126,7 +126,7 @@ public class ServiceToDaoRealizationTest {
     @Test
     public void getOwnExpenseSheets() {
         Tenant tenant = new Tenant("Jack", "13124", "陕西", "13812742974", "2002-01-03", GenderEnum.FEMALE);
-        ArrayList<ExpenseSheet> expenseSheets= serviceToDaoRealization.getOwnExpenseSheets(tenant);
+        ArrayList<ExpenseSheet> expenseSheets= serviceToDaoRealization.getOwnExpenseSheets("Jack",false);
     }
 
     @Test
