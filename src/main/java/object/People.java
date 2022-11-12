@@ -6,13 +6,6 @@ public class People {
     private String address;
     private String telNumber;
 
-    public People(){}
-
-    //temp
-    public People(String ID){
-        this.ID=ID;
-    }
-
     public People(String name,String ID,String address,String telNumber){
         this.name=name;
         this.ID=ID;

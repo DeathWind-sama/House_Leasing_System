@@ -104,7 +104,7 @@ public class ServiceToDaoRealizationTest {
     @Test
     public void VisitRecord() {
         /*测试addVisitRecord*/
-        VisitRecord visitRecord = new VisitRecord("1212736", "222", "25346", "2022-3-12", "2022-9-12");
+        VisitRecord visitRecord = new VisitRecord("1212736", "222", "25346", "2022-3-12", "2022-9-12","AfterLife");
         boolean ok = serviceToDaoRealization.addVisitRecord(visitRecord);
     }
 
