@@ -90,7 +90,6 @@ public class HouseServlet extends HttpServlet {
         System.out.println("registerHouse");
         JSONObject responseJS=new JSONObject();
 
-        String houseID=request.getParameter("houseID");
         String ownerID=request.getParameter("ownerID");
         String address=request.getParameter("address");
         HouseTypeEnum houseType= HouseTypeEnum.judgeHouseTypeFromString(request.getParameter("houseType"));
@@ -109,7 +108,7 @@ public class HouseServlet extends HttpServlet {
 
             //添加费用单
             People homeowner = serviceToDaoInterface.getPeople(ownerID,true);
-            ExpenseSheet expenseSheet=new ExpenseSheet(ownerID,homeowner.getName(),true,ExpenseSheetServlet.registerHousePrice,houseID);
+            ExpenseSheet expenseSheet=new ExpenseSheet(ownerID,homeowner.getName(),true,ExpenseSheetServlet.registerHousePrice, house.getHouseID());
             serviceToDaoInterface.addExpenseSheet(expenseSheet);
         } else {
             System.out.println("Fail.");
