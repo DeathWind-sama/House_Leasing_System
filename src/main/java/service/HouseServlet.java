@@ -97,7 +97,7 @@ public class HouseServlet extends HttpServlet {
         int maxTenantsNum= Integer.parseInt(request.getParameter("maxTenantsNum"));
         double monthlyRent= Double.parseDouble(request.getParameter("monthlyRent"));
 
-        House house=new House(houseID,ownerID,false,false,address,houseType,maxTenantsNum,monthlyRent);
+        House house=new House(ownerID,address,houseType,maxTenantsNum,monthlyRent);
 
         //search
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();

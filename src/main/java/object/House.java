@@ -29,15 +29,15 @@ public class House {//地址、房型（如平房、带阳台的楼房、独立�
         this.monthlyRent=monthlyRent;
     }
 
-    public House(String ownerID,boolean isAbleSearched,
+    public House(String ownerID,
                  String address,HouseTypeEnum houseType,int maxTenantsNum,double monthlyRent){
         this.ownerID=ownerID;
-        this.isAbleSearched=isAbleSearched;
         this.address=address;
         this.houseType=houseType;
         this.maxTenantsNum=maxTenantsNum;
         this.monthlyRent=monthlyRent;
         this.isLeased=false;
+        this.isAbleSearched=false;
         this.houseID= SnowFlake.snowGenString();
     }
 

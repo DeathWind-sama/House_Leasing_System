@@ -12,6 +12,16 @@ public class ExpenseSheet {
 
     private String houseID;
 
+    public ExpenseSheet(String sheetID,String payerID,String payerName,boolean isHomeowner,double payAmount,boolean isPayed,String houseID){
+        this.sheetID=sheetID;
+        this.payerID=payerID;
+        this.payerName=payerName;
+        this.isHomeowner =isHomeowner;
+        this.payAmount=payAmount;
+        this.isPayed=isPayed;
+        this.houseID=houseID;
+    }
+
     public ExpenseSheet(String payerID,String payerName,boolean isHomeowner,double payAmount,String houseID){
         this.payerID=payerID;
         this.payerName=payerName;
@@ -20,11 +30,6 @@ public class ExpenseSheet {
         this.houseID=houseID;
         this.isPayed=false;
         this.sheetID= SnowFlake.snowGenString();
-    }
-    public ExpenseSheet(String sheetID,String payerID,String payerName,boolean isHomeowner,double payAmount,boolean isPayed,String houseID){
-        this(payerID,payerName,isHomeowner,payAmount,houseID);
-        this.sheetID=sheetID;
-        this.isPayed=isPayed;
     }
 
 

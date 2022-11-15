@@ -93,13 +93,13 @@ public class ExpenseSheetServlet extends HttpServlet {
 
         if(isSucceed){
             //解锁房屋或者增加交流许可
-            if(isHomeowner){//-----------------bad
+            if(isHomeowner){
                 serviceToDaoInterface.unlockHouse(houseID);
             }else{
                 //通过houseID找到homeownerID
                 House house=serviceToDaoInterface.getHouse(houseID);
                 String homeownerID=house.getOwnerID();
-                CommunicationAuthority communicationAuthority=new CommunicationAuthority(homeownerID,payerID,"",houseID);
+                CommunicationAuthority communicationAuthority=new CommunicationAuthority(homeownerID,payerID,houseID);
                 serviceToDaoInterface.addCommunicationAuthority(communicationAuthority);
             }
 
