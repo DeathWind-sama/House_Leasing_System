@@ -84,22 +84,24 @@ public class ExpenseSheetServlet extends HttpServlet {
         System.out.println("completePaySheet");
 
         String sheetID=request.getParameter("sheetid");
-        boolean isHomeowner= Objects.equals(request.getParameter("ishomeowner"), "true");
-        String payerID=request.getParameter("payerid");
-        String houseID=request.getParameter("houseid");
+//        boolean isHomeowner= Objects.equals(request.getParameter("ishomeowner"), "true");
+//        String payerID=request.getParameter("payerid");
+//        String houseID=request.getParameter("houseid");
 
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
         boolean isSucceed = serviceToDaoInterface.payExpenseSheet(sheetID);
 
         if(isSucceed){
+            ExpenseSheet expenseSheet=serviceToDaoInterface.getExpenseSheet(sheetID);
+
             //解锁房屋或者增加交流许可
-            if(isHomeowner){
-                serviceToDaoInterface.unlockHouse(houseID);
+            if(expenseSheet.getIsHomeOwner()){
+                serviceToDaoInterface.unlockHouse(expenseSheet.getHouseID());
             }else{
                 //通过houseID找到homeownerID
-                House house=serviceToDaoInterface.getHouse(houseID);
+                House house=serviceToDaoInterface.getHouse(expenseSheet.getHouseID());
                 String homeownerID=house.getOwnerID();
-                CommunicationAuthority communicationAuthority=new CommunicationAuthority(homeownerID,payerID,houseID);
+                CommunicationAuthority communicationAuthority=new CommunicationAuthority(homeownerID,expenseSheet.getPayerID(),expenseSheet.getHouseID());
                 serviceToDaoInterface.addCommunicationAuthority(communicationAuthority);
             }
 
