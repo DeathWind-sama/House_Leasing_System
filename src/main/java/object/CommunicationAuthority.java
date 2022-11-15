@@ -26,11 +26,14 @@ public class CommunicationAuthority {
         this.houseID=houseID;
     }
 
-    public CommunicationAuthority(String homeownerID,String tenantID,String authorityID,String houseID){
+    public CommunicationAuthority(String homeownerID,String tenantID,String authorityID,String houseID,String appointedTime,String appointedPlace,boolean isHomeownerModifyAvailable){
         this.homeownerID=homeownerID;
         this.tenantID=tenantID;
         this.authorityID=authorityID;
         this.houseID=houseID;
+        this.appointedTime=appointedTime;
+        this.appointedPlace=appointedPlace;
+        this.isHomeownerModifyAvailable=isHomeownerModifyAvailable;
     }
 
 

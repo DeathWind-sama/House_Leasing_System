@@ -119,7 +119,7 @@ public class ServiceToDaoRealizationTest {
 
     @Test
     public void addCommunicationAuthority() {
-        CommunicationAuthority communicationAuthority = new CommunicationAuthority("122", "234", "298497", "645467");
+        CommunicationAuthority communicationAuthority = new CommunicationAuthority("122", "234", "298497");
         boolean ok = serviceToDaoRealization.addCommunicationAuthority(communicationAuthority);
     }
 

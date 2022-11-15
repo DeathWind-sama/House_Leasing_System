@@ -466,7 +466,8 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             else
             {
                 do {
-                    CommunicationAuthority communicationAuthority=new CommunicationAuthority(resultSet.getString(1), resultSet.getString(2),resultSet.getString(4),resultSet.getString(3));
+                    CommunicationAuthority communicationAuthority=new CommunicationAuthority(resultSet.getString(1),resultSet.getString(2),resultSet.getString(4),resultSet.getString(3),
+                            resultSet.getString(5),resultSet.getString(6),resultSet.getBoolean(7));
                     communicationAuthorityArrayListResult.add(communicationAuthority);
 
                 }while (resultSet.next());
@@ -489,7 +490,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         String sql_1="UPDATE communicationauthority SET appointedTime=?  WHERE authorityID=?";
         String sql_2="UPDATE communicationauthority SET appointedPlace=?  WHERE authorityID=?";
-        String sql_3="UPDATE communicationauthority SET isHomeownerModifyAvailable=TRUE  WHERE authorityID=?";
+        String sql_3="UPDATE communicationauthority SET isHomeownerModifyAvailable=NOT isHomeownerModifyAvailable  WHERE authorityID=?";
 
         PreparedStatement preparedStatement = null;
         try {
@@ -1021,6 +1022,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         return peopleResult;
     }
 
+    @Override
     public CommunicationAuthority getCommunicationAuthority(String communicationID)
     {
         DBUtils.init_connection();
@@ -1041,7 +1043,8 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
             if(resultSet.next())
             {
-                communicationAuthority=new CommunicationAuthority(resultSet.getString(1),resultSet.getString(2),resultSet.getString(4),resultSet.getString(3));
+                communicationAuthority=new CommunicationAuthority(resultSet.getString(1),resultSet.getString(2),resultSet.getString(4),resultSet.getString(3),
+                        resultSet.getString(5),resultSet.getString(6),resultSet.getBoolean(7));
             }
 
         } catch (SQLException e) {
