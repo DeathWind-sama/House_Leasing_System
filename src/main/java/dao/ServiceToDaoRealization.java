@@ -557,13 +557,15 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             else
             {
                 //若该没有注册过，则注册成功
-                String sql="INSERT INTO communicationauthority(homeownerID,tenantID,houseID,authorityID) VALUES (?,?,?,?)";
+                String sql="INSERT INTO communicationauthority(homeownerID,tenantID,houseID,authorityID,appointedPlace,appointedTime,isHomeownerModifyAvailable) VALUES (?,?,?,?,?,?,?) ";
                 preparedStatement = DBUtils.connection.prepareStatement(sql);
                 preparedStatement.setString(1,communicationAuthority.getHomeownerID());
                 preparedStatement.setString(2,communicationAuthority.getTenantID());
                 preparedStatement.setString(3,communicationAuthority.getHouseID());
                 preparedStatement.setString(4,communicationAuthority.getAuthorityID());
-
+                preparedStatement.setString(5,"DEFAULT PLACE");
+                preparedStatement.setString(6,"0000-00-00 00:00");
+                preparedStatement.setBoolean(7,false);
 
                 preparedStatement.execute();
             }
