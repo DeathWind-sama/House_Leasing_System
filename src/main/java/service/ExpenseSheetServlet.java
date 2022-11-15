@@ -21,7 +21,7 @@ import java.util.Objects;
 /**
  * searchSheet: 通过id获取一个人的所有费用单
  * getPayView: 跳转到Sheet的支付界面pay.jsp
- * completePaySheet: 付完钱了，通过sheet信息让此Sheet标记成已支付并给予对应权限，然后从支付界面回到原界面
+ * completePaySheet: 付完钱了，通过sheetid让此Sheet标记成已支付并给予对应权限，然后从支付界面回到原界面
  */
 @WebServlet(name = "SheetManager", value = "/SheetManager")
 public class ExpenseSheetServlet extends HttpServlet {
