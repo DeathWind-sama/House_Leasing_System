@@ -198,33 +198,33 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         PreparedStatement preparedStatement = null;
 
-        try {
-            String sql;
-            if(isHomeowner) {
-                sql = "select * FROM contract where homeownerID=?";
-            }else{
-                sql = "select * FROM contract where tenantID=?";
-            }
-            preparedStatement = DBUtils.connection.prepareStatement(sql);
-            preparedStatement.setString(1,ID);
-
-            //处理返回结果集
-            resultSet=preparedStatement.executeQuery();
-            if(!resultSet.next())
-            {
-                isSuccess=false;
-            }
-
-            else
-            {
-                do {
-                    Contract contract=new Contract(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getDouble(4),resultSet.getDouble(5),resultSet.getString(6));
-                    contractArrayListResult.add(contract);
-                }while (resultSet.next());
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            String sql;
+//            if(isHomeowner) {
+//                sql = "select * FROM contract where homeownerID=?";
+//            }else{
+//                sql = "select * FROM contract where tenantID=?";
+//            }
+//            preparedStatement = DBUtils.connection.prepareStatement(sql);
+//            preparedStatement.setString(1,ID);
+//
+//            //处理返回结果集
+//            resultSet=preparedStatement.executeQuery();
+//            if(!resultSet.next())
+//            {
+//                isSuccess=false;
+//            }
+//
+//            else
+//            {
+//                do {
+//                    Contract contract=new Contract(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getDouble(4),resultSet.getDouble(5),resultSet.getString(6));
+//                    contractArrayListResult.add(contract);
+//                }while (resultSet.next());
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
 
         DBUtils.close();
 
@@ -244,27 +244,27 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         PreparedStatement preparedStatement = null;
 
-        try {
-            String sql="select * FROM contract where ID=? ";
-            preparedStatement = DBUtils.connection.prepareStatement(sql);
-            preparedStatement.setString(1,contractID);
-
-
-            //处理返回结果集
-            resultSet=preparedStatement.executeQuery();
-            if(!resultSet.next())
-            {
-                isSuccess=false;
-            }
-
-            else
-            {
-                contractResult= new Contract(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getDouble(4),resultSet.getDouble(5),resultSet.getString(6));
-
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            String sql="select * FROM contract where ID=? ";
+//            preparedStatement = DBUtils.connection.prepareStatement(sql);
+//            preparedStatement.setString(1,contractID);
+//
+//
+//            //处理返回结果集
+//            resultSet=preparedStatement.executeQuery();
+//            if(!resultSet.next())
+//            {
+//                isSuccess=false;
+//            }
+//
+//            else
+//            {
+//                contractResult= new Contract(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getDouble(4),resultSet.getDouble(5),resultSet.getString(6));
+//
+//            }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
 
         DBUtils.close();
 
@@ -558,9 +558,9 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         try {
             String sql;
             if(isHomeowner){
-                sql="select * FROM communicationauthority where homeownerID=?";
+                sql="select * FROM expensesheet where payerID=? and isHomeowner=true";
             }else{
-                sql="select * FROM communicationauthority where tenantID=?";
+                sql="select * FROM expensesheet where payerID=? and isHomeowner=false";
             }
             preparedStatement = DBUtils.connection.prepareStatement(sql);
             preparedStatement.setString(1,ID);
@@ -593,49 +593,29 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
-    public boolean addExpenseSheet(ExpenseSheet expenseSheet)
-    {
+    public boolean addExpenseSheet(ExpenseSheet expenseSheet) {
 
         DBUtils.init_connection();
         //默认注册成功
-        boolean isSuccess=true;
+        boolean isSuccess = true;
 
-        ResultSet resultSet=null;
-        ResultSet resultSet1=null;
+        ResultSet resultSet1 = null;
 
         PreparedStatement preparedStatement = null;
 
 
         try {
+            String sql = "INSERT INTO `expensesheet`(`sheetID`,`payerID`,`payerName`,`isHomeowner`,`payAmount`,`isPayed`,`houseID`) VALUES (?,?,?,?,?,?,?)";
+            preparedStatement = DBUtils.connection.prepareStatement(sql);
+            preparedStatement.setString(1, expenseSheet.getSheetID());
+            preparedStatement.setString(2, expenseSheet.getPayerID());
+            preparedStatement.setString(3, expenseSheet.getPayerName());
+            preparedStatement.setBoolean(4, expenseSheet.getIsHomeOwner());
+            preparedStatement.setDouble(5, expenseSheet.getPayAmount());
+            preparedStatement.setBoolean(6, expenseSheet.getIsPayed());
+            preparedStatement.setString(7, expenseSheet.getHouseID());
 
-
-            //如果该sheetID已被注册
-            if(resultSet.next())
-            {
-                isSuccess=false;
-            }
-            else
-            {
-                String sql="INSERT INTO `expensesheet`(`sheetID`,`payerID`,`payerName`,`isHomeowner`,`payAmount`,`isPayed`,`houseID`) VALUES (?,?,?,?,?,?,?)";
-                //先找出payerName
-                String sql_ask1="select * FROM tenant where ID=?";
-                preparedStatement = DBUtils.connection.prepareStatement(sql_ask1);
-                preparedStatement.setString(1,expenseSheet.getPayerID());
-                resultSet1=preparedStatement.executeQuery();
-                resultSet1.next();
-
-                preparedStatement = DBUtils.connection.prepareStatement(sql);
-                preparedStatement.setString(1,expenseSheet.getSheetID());
-                preparedStatement.setString(2,expenseSheet.getPayerID());
-                preparedStatement.setString(3,resultSet1.getString(2));
-                preparedStatement.setBoolean(4,expenseSheet.getIsHomeOwner());
-                preparedStatement.setDouble(5,expenseSheet.getPayAmount());
-                preparedStatement.setBoolean(6,expenseSheet.getIsPayed());
-                preparedStatement.setString(7,expenseSheet.getHouseID());
-
-                preparedStatement.execute();
-            }
-
+            preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
