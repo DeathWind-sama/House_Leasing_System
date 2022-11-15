@@ -104,6 +104,39 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
     }
 
     @Override
+    public ExpenseSheet getExpenseSheet(String sheetID) {
+        DBUtils.init_connection();
+
+        ExpenseSheet expenseSheet=null;
+        //默认查询成功
+        boolean isSuccess=true;
+
+        ResultSet resultSet=null;
+        String sql="select * FROM expensesheet where sheetID=? ";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = DBUtils.connection.prepareStatement(sql);
+            preparedStatement.setString(1,sheetID);
+
+
+            //处理返回结果集
+            resultSet=preparedStatement.executeQuery();
+
+            if(resultSet.next())
+            {
+                expenseSheet=new ExpenseSheet(resultSet.getString(6), resultSet.getString(1),resultSet.getString(2),resultSet.getBoolean(3), resultSet.getDouble(4),resultSet.getBoolean(7),resultSet.getString(5));
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        DBUtils.close();
+        return expenseSheet;
+    }
+
+    @Override
     public boolean payExpenseSheet(String sheetID) {
         //默认修改失败
         boolean isSuccess=false;

@@ -30,6 +30,7 @@ public interface ServiceToDaoInterface {
     //Expense Sheet
     boolean addExpenseSheet(ExpenseSheet expenseSheet);//添加。要生成唯一识别码
     boolean delExpenseSheet(String sheetID);//删除
+    ExpenseSheet getExpenseSheet(String sheetID);//查找
     ArrayList<ExpenseSheet> getOwnExpenseSheets(String ID,boolean isHomeowner);//返回一个人的所有账单，无论有没有付款
     //    boolean getAllExpenseSheets(ArrayList<ExpenseSheet> expenseSheetArrayList);//返回所有账单（管理员权限）
     boolean payExpenseSheet(String sheetID);//付钱了，修改isPayed
