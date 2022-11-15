@@ -1,12 +1,14 @@
 package object;
 
+import dao.SnowFlake;
+
 public class ExpenseSheet {
-    private String sheetID="NULL";//由Dao层生成或数据库给予
+    private String sheetID;
     private String payerID;
     private String payerName;
     private boolean isHomeowner;
     private double payAmount;
-    private boolean isPayed=false;
+    private boolean isPayed;
 
     private String houseID;
 
@@ -16,6 +18,8 @@ public class ExpenseSheet {
         this.isHomeowner =isHomeowner;
         this.payAmount=payAmount;
         this.houseID=houseID;
+        this.isPayed=false;
+        this.sheetID= SnowFlake.snowGenString();
     }
     public ExpenseSheet(String sheetID,String payerID,String payerName,boolean isHomeowner,double payAmount,boolean isPayed,String houseID){
         this(payerID,payerName,isHomeowner,payAmount,houseID);

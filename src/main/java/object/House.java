@@ -1,5 +1,6 @@
 package object;
 
+import dao.SnowFlake;
 import object.enums.HouseTypeEnum;
 
 public class House {//地址、房型（如平房、带阳台的楼房、独立式住宅等）、最多容纳房客数、租金及房屋状态（待租赁、已出租）。
@@ -26,6 +27,18 @@ public class House {//地址、房型（如平房、带阳台的楼房、独立�
         this.houseType=houseType;
         this.maxTenantsNum=maxTenantsNum;
         this.monthlyRent=monthlyRent;
+    }
+
+    public House(String ownerID,boolean isAbleSearched,
+                 String address,HouseTypeEnum houseType,int maxTenantsNum,double monthlyRent){
+        this.ownerID=ownerID;
+        this.isAbleSearched=isAbleSearched;
+        this.address=address;
+        this.houseType=houseType;
+        this.maxTenantsNum=maxTenantsNum;
+        this.monthlyRent=monthlyRent;
+        this.isLeased=false;
+        this.houseID= SnowFlake.snowGenString();
     }
 
 
