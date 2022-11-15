@@ -386,7 +386,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             else
             {
                 do {
-                    VisitRecord visitRecord=new VisitRecord(resultSet.getString(1), resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5));
+                    VisitRecord visitRecord=new VisitRecord(resultSet.getString(1), resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getString(6));
                     visitRecordArrayList.add(visitRecord);
 
 
@@ -415,13 +415,15 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
         try {
 
-                String sql="INSERT INTO `visitrecord`(`houseID`,`homeownerID`,`tenantID`,`payTime`,`appointedTime`) VALUES(?,?,?,?,?)";
-                preparedStatement = DBUtils.connection.prepareStatement(sql);
-                preparedStatement.setString(1,visitRecord.getHouseID());
-                preparedStatement.setString(2,visitRecord.getHomeownerID());
-                preparedStatement.setString(3,visitRecord.getTenantID());
-                preparedStatement.setString(4,visitRecord.getPayTime());
-                preparedStatement.setString(5,visitRecord.getAppointedTime());
+            String sql="INSERT INTO `visitrecord`(`houseID`,`homeownerID`,`tenantID`,`payTime`,`appointedTime`,`appointedPlace`) VALUES(?,?,?,?,?,?)";
+            preparedStatement = DBUtils.connection.prepareStatement(sql);
+
+            preparedStatement.setString(1,visitRecord.getHouseID());
+            preparedStatement.setString(2,visitRecord.getHomeownerID());
+            preparedStatement.setString(3,visitRecord.getTenantID());
+            preparedStatement.setString(4,visitRecord.getPayTime());
+            preparedStatement.setString(5,visitRecord.getAppointedTime());
+            preparedStatement.setString(6,visitRecord.getAppointedPlace());
 
 
                 preparedStatement.execute();

@@ -125,6 +125,10 @@ public class CommunicationAuthorityServlet extends HttpServlet {
 
         ServiceToDaoInterface serviceToDaoInterface=new ServiceToDaoRealization();
         CommunicationAuthority communicationAuthority=serviceToDaoInterface.getCommunicationAuthority(communicationID);
+        if(communicationAuthority==null){
+            response.setStatus(404);
+            return;
+        }
         //删除当前交流许可
         serviceToDaoInterface.delCommunicationAuthority(communicationID);
 

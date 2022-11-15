@@ -11,15 +11,6 @@ public class VisitRecord {
     private String appointedTime;
     private String appointedPlace;
 
-    //temp
-    public VisitRecord(String houseID,String homeownerID,String tenantID,String payTime,String appointedTime){
-        this.houseID=houseID;
-        this.homeownerID=homeownerID;
-        this.tenantID=tenantID;
-        this.payTime=payTime;
-        this.appointedTime=appointedTime;
-    }
-
     public VisitRecord(String houseID,String homeownerID,String tenantID,String payTime,String appointedTime,String appointedPlace){
         this.houseID=houseID;
         this.homeownerID=homeownerID;
@@ -56,5 +47,9 @@ public class VisitRecord {
 
     public String getAppointedTime() {
         return appointedTime;
+    }
+
+    public String getAppointedPlace() {
+        return appointedPlace;
     }
 }
