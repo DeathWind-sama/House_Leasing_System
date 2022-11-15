@@ -79,11 +79,37 @@ public class ContractServlet extends HttpServlet {
 
         Contract contract=new Contract(homeownerID,tenantID,monthlyRent,0,houseID);
 
-        //search
+        //register
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
-        boolean isSuccess = serviceToDaoInterface.addContract(contract);
+        boolean isSucceed = serviceToDaoInterface.addContract(contract);
 
-        if (isSuccess) {
+        if (isSucceed) {
+            System.out.println("Succeed.");
+            responseJS.put("result", "true");
+        } else {
+            System.out.println("Fail.");
+            responseJS.put("result", "false");
+        }
+
+        //response
+        String responseJSStr = JSON.toJSONString(responseJS);
+        System.out.println("Response JS: " + responseJSStr);
+        PrintWriter responseWriter = response.getWriter();
+        responseWriter.write(responseJSStr);
+    }
+
+    private void confirmContract(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("confirmContract");
+        JSONObject responseJS=new JSONObject();
+
+        String contractID = request.getParameter("contractid");
+
+        //confirm
+        ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
+//        boolean isSucceed = serviceToDaoInterface.getOwnContracts(id,isHomeOwner);
+        boolean isSucceed=false;//---------------
+
+        if (isSucceed) {
             System.out.println("Succeed.");
             responseJS.put("result", "true");
         } else {
