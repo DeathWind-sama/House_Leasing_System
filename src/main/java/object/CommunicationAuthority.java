@@ -1,5 +1,7 @@
 package object;
 
+import dao.SnowFlake;
+
 /**
  * 付费后，生成此项并放入看房申请表中
  */
@@ -13,8 +15,16 @@ public class CommunicationAuthority {
     private String appointedTime="";
     private String appointedPlace="";
 
+
     private boolean isHomeownerModifyAvailable=false;//whether it's homeowner's turn to decide
 
+
+    public CommunicationAuthority(String homeownerID,String tenantID,String houseID){
+        this.homeownerID=homeownerID;
+        this.tenantID=tenantID;
+        this.authorityID = SnowFlake.snowGenString();
+        this.houseID=houseID;
+    }
 
     public CommunicationAuthority(String homeownerID,String tenantID,String authorityID,String houseID){
         this.homeownerID=homeownerID;
