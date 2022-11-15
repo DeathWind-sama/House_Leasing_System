@@ -15,13 +15,16 @@ public class Contract {
 
     private String houseID;
 
-    public Contract(String ContractID,String homeownerID,String tenantID,double monthlyRent,double rentArrears,String houseID){
+    private boolean isConfirmed;
+
+    public Contract(String ContractID,String homeownerID,String tenantID,double monthlyRent,double rentArrears,String houseID,boolean isConfirmed){
         this.ContractID=ContractID;
         this.homeownerID=homeownerID;
         this.tenantID=tenantID;
         this.monthlyRent=monthlyRent;
         this.rentArrears=rentArrears;
         this.houseID=houseID;
+        this.isConfirmed=isConfirmed;
     }
 
     public Contract(String homeownerID, String tenantID, double monthlyRent, double rentArrears, String houseID) {
@@ -30,6 +33,7 @@ public class Contract {
         this.monthlyRent = monthlyRent;
         this.rentArrears = rentArrears;
         this.houseID = houseID;
+        this.isConfirmed=false;
         this.ContractID = SnowFlake.snowGenString();
     }
 
