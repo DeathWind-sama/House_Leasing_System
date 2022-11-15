@@ -509,6 +509,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             //查询communicationAuthority是否已经被申请
             String sql_ask="select * FROM communicationauthority where authorityID=?";
             preparedStatement = DBUtils.connection.prepareStatement(sql_ask);
+
             preparedStatement.setString(1,communicationAuthority.getAuthorityID());
 
 
@@ -606,13 +607,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
 
 
         try {
-            //查询该sheetID是否已被注册
-            String sql_ask="select * FROM expensesheet where sheetID=?";
-            preparedStatement = DBUtils.connection.prepareStatement(sql_ask);
-            preparedStatement.setString(1,expenseSheet.getSheetID());
 
-            //处理返回结果集
-            resultSet=preparedStatement.executeQuery();
 
             //如果该sheetID已被注册
             if(resultSet.next())
@@ -621,7 +616,6 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
             }
             else
             {
-                //若该sheetID没有注册过，则注册成功
                 String sql="INSERT INTO `expensesheet`(`sheetID`,`payerID`,`payerName`,`isHomeowner`,`payAmount`,`isPayed`,`houseID`) VALUES (?,?,?,?,?,?,?)";
                 //先找出payerName
                 String sql_ask1="select * FROM tenant where ID=?";
