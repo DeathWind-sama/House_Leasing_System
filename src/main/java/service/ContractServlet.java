@@ -20,6 +20,11 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * searchContract: 通过id和ishomeowner查找所属的所有合同
+ * registerContract: 由房主发起，通过homeownerid、tenantid、houseid、monthlyrent来创建一个合同
+ * confirmContract: 租赁者通过contractid确认对应合同
+ */
 @WebServlet(name = "ContractManager", value = "/ContractManager")
 public class ContractServlet extends HttpServlet {
     @Override
