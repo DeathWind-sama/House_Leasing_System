@@ -698,12 +698,11 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
         boolean isSuccess=true;
         int s=0;
         ResultSet resultSet=null;
-        String sql="select * FROM house where house.isAbleSearched=TRUE ";
+        String sql="select * FROM house where house.isAbleSearched=TRUE ORDER BY RAND() LIMIT ? ";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = DBUtils.connection.prepareStatement(sql);
-
-
+            preparedStatement.setInt(1,quantity);
 
             //处理返回结果集
             resultSet=preparedStatement.executeQuery();
@@ -717,9 +716,7 @@ public  class ServiceToDaoRealization implements ServiceToDaoInterface {
                 do {
                     House house=new House(resultSet.getString(1), resultSet.getString(2),resultSet.getBoolean(3), resultSet.getBoolean(4),resultSet.getString(5),HouseTypeEnum.valueOf((String) resultSet.getObject(6)),resultSet.getInt(7),resultSet.getInt(8));
                     houseArrayListResult.add(house);
-                    s++;
-
-                }while (resultSet.next()&&s<quantity);
+                }while (resultSet.next());
 
             }
         } catch (SQLException e) {
