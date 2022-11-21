@@ -12,7 +12,7 @@
   <br><br>
   <table id="idtable"></table>
   <br><br>
-  <table id="housetable"></table>
+  <table id="housetable" border="1"></table>
 </div>
 
 <script>
@@ -38,21 +38,20 @@
         var obj = JSON.parse(this.responseText);
         var table = "<tr><th>houseID</th><th>ownerID</th><th>isLeased</th><th>isAbleSearched</th></tr>";
         for (var i in obj) {  //遍历数组
-          alert(obj[i].isLeased);
           table += "<tr><td>" +
-                  obj[i].houseID;
+                  obj[i].houseID+
                   "</td><td>" +
-                  obj[i].ownerID;
+                  obj[i].ownerID+
                   "</td><td>" +
-                  obj[i].isLeased;
+                  obj[i].isLeased+
                   "</td><td>" +
-                  obj[i].isAbleSearched;
+                  obj[i].isAbleSearched+
                   "</td></tr>";
         }
 
 
       }
-      document.getElementById("idtable").innerHTML = table;
+      document.getElementById("housetable").innerHTML = table;
     };
   }
   function jump() {
