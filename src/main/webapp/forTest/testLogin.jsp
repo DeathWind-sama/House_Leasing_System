@@ -25,7 +25,7 @@
         </label>
       </div>
       <button type="button"  onclick="loginfun('login')">登录</button>
-      <button type="button" name="function" value="register" onclick="message_register()">注册</button>
+      <button type="button" name="function" value="register" onclick="loginfun('register')">注册</button>
 
   </div>
 
@@ -44,11 +44,10 @@
 
 </div>
 <script language=javascript>
-  var identity="";
   function loginfun(fun) {
     var id=document.getElementById("id").value;
     var password=document.getElementById("password").value;
-
+    var identity="";
     var radio = document.getElementsByName("identity");
     for (var i=0; i<radio.length; i++) {
       if (radio[i].checked) {
@@ -56,7 +55,6 @@
         identity=radio[i].value;
       }
     }
-
 
     var xhttp;
     if (window.XMLHttpRequest) {
@@ -80,9 +78,6 @@
         }
       }
     };
-  }
-  function jump() {
-
   }
 </script>
 </body>

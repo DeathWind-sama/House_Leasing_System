@@ -16,8 +16,9 @@
 </div>
 
 <script>
-  var identity="homeowner";
-  var id=78999
+  var fun="searchHouse";
+  var searchtype="all"
+  var num="10";
   function showTable() {
     var xhttp;
     if (window.XMLHttpRequest) {
@@ -27,20 +28,29 @@
       xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
 
-    xhttp.open("POST", "http://localhost:8080/HLS/PeopleMessage");
+    xhttp.open("POST", "http://localhost:8080/HLS/HouseManager");
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("identity="+identity+"&id="+id);
+    xhttp.send("function="+fun+"&searchtype="+searchtype+"&num="+num);
 
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         alert(this.responseText);
         var obj = JSON.parse(this.responseText);
-        var table = "<tr><th>ID</th><th>Name</th></tr>";
-        table += "<tr><td>" +
-                obj.ID +
-                "</td><td>" +
-                obj.name +
-                "</td></tr>";
+        var table = "<tr><th>houseID</th><th>ownerID</th><th>isLeased</th><th>isAbleSearched</th></tr>";
+        for (var i in obj) {  //遍历数组
+          alert(obj[i].isLeased);
+          table += "<tr><td>" +
+                  obj[i].houseID;
+                  "</td><td>" +
+                  obj[i].ownerID;
+                  "</td><td>" +
+                  obj[i].isLeased;
+                  "</td><td>" +
+                  obj[i].isAbleSearched;
+                  "</td></tr>";
+        }
+
+
       }
       document.getElementById("idtable").innerHTML = table;
     };
