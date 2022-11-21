@@ -8,6 +8,10 @@
 <div id="demo">
   <h1>XMLHttpRequest 对象 in JSP</h1>
   <button type="button" onclick="loadDoc()">更改内容</button>
+  <br><br>
+  <table id="idtable"></table>
+  <br><br>
+  <table id="housetable"></table>
 </div>
 
 <script>
@@ -26,7 +30,16 @@
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       alert(this.responseText);
+      var obj = JSON.parse(this.responseText);
+      var table="<tr><th>ID</th><th>Name</th></tr>";
+      table += "<tr><td>" +
+              obj.ID +
+              "</td><td>" +
+              obj.name +
+              "</td></tr>";
     }
+    document.getElementById("idtable").innerHTML = table;
+    window.location.href = 'welcome.html';
   };
 </script>
 </body>
