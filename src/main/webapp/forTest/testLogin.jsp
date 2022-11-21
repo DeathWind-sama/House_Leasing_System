@@ -14,8 +14,8 @@
 
   <div class="container">
     <h1>房屋租赁系统</h1>
-      <div id="id"><input type="text" name="id" placeholder="用户名" ></div>
-      <div id="password"><input type="password" name="password" placeholder="密码" ></div>
+      <div><input id="id" type="text" name="id" placeholder="用户名" ></div>
+      <div><input id="password" type="password" name="password" placeholder="密码" ></div>
       <div id="identity">
         <label class="radio inline">
           <input id="homeowner" type="radio" name="identity" value="homeowner"  checked/> 房主
@@ -68,7 +68,7 @@
         alert(this.responseText);
         var obj = JSON.parse(this.responseText);
         document.getElementById("idtable").innerHTML = obj.result;
-        if(true) {//obj.result
+        if(obj.result==="true") {//obj.result
           window.location.href = 'aimJSP.jsp?id=' + id;
         }
       }
