@@ -16,6 +16,8 @@
 </div>
 
 <script>
+  var identity="homeowner";
+  var id=78999
   function showTable() {
     var xhttp;
     if (window.XMLHttpRequest) {
@@ -27,7 +29,7 @@
 
     xhttp.open("POST", "http://localhost:8080/HLS/PeopleMessage");
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("identity=homeowner&id=78999");
+    xhttp.send("identity="+identity+"&id="+id);
 
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
@@ -44,7 +46,7 @@
     };
   }
   function jump() {
-    window.location.href = 'welcome.html';
+    window.location.href = 'aimJSP.jsp?id='+id;
   }
 </script>
 </body>
