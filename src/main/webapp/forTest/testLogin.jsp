@@ -16,7 +16,7 @@
     <h1>房屋租赁系统</h1>
       <div><input id="id" type="text" name="id" placeholder="用户名" ></div>
       <div><input id="password" type="password" name="password" placeholder="密码" ></div>
-      <div id="identity">
+      <div>
         <label class="radio inline">
           <input id="homeowner" type="radio" name="identity" value="homeowner"  checked/> 房主
         </label>
@@ -44,12 +44,19 @@
 
 </div>
 <script language=javascript>
+  var identity="";
   function loginfun(fun) {
-    alert(fun);
     var id=document.getElementById("id").value;
-    alert(id);
     var password=document.getElementById("password").value;
-    var identity="homeowner";
+
+    var radio = document.getElementsByName("identity");
+    for (var i=0; i<radio.length; i++) {
+      if (radio[i].checked) {
+        alert(radio[i].value)
+        identity=radio[i].value;
+      }
+    }
+
 
     var xhttp;
     if (window.XMLHttpRequest) {
