@@ -7,7 +7,8 @@
 <body>
 <div id="demo">
   <h1>XMLHttpRequest 对象 in JSP</h1>
-  <button type="button" onclick="loadDoc()">更改内容</button>
+  <button type="button" onclick="showTable()">显示内容</button>
+  <button type="button" onclick="jump()">跳转</button>
   <br><br>
   <table id="idtable"></table>
   <br><br>
@@ -15,32 +16,36 @@
 </div>
 
 <script>
-  var xhttp;
-  if (window.XMLHttpRequest) {
-    xhttp = new XMLHttpRequest();
-  } else {
-    // code for IE6, IE5
-    xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-
-  xhttp.open("POST", "http://localhost:8080/HLS/PeopleMessage");
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("identity=homeowner&id=78999");
-
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      alert(this.responseText);
-      var obj = JSON.parse(this.responseText);
-      var table="<tr><th>ID</th><th>Name</th></tr>";
-      table += "<tr><td>" +
-              obj.ID +
-              "</td><td>" +
-              obj.name +
-              "</td></tr>";
+  function showTable() {
+    var xhttp;
+    if (window.XMLHttpRequest) {
+      xhttp = new XMLHttpRequest();
+    } else {
+      // code for IE6, IE5
+      xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    document.getElementById("idtable").innerHTML = table;
+
+    xhttp.open("POST", "http://localhost:8080/HLS/PeopleMessage");
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("identity=homeowner&id=78999");
+
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        alert(this.responseText);
+        var obj = JSON.parse(this.responseText);
+        var table = "<tr><th>ID</th><th>Name</th></tr>";
+        table += "<tr><td>" +
+                obj.ID +
+                "</td><td>" +
+                obj.name +
+                "</td></tr>";
+      }
+      document.getElementById("idtable").innerHTML = table;
+    };
+  }
+  function jump() {
     window.location.href = 'welcome.html';
-  };
+  }
 </script>
 </body>
 </html>
