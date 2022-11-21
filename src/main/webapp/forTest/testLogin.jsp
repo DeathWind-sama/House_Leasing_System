@@ -68,11 +68,14 @@
         alert(this.responseText);
         var obj = JSON.parse(this.responseText);
         document.getElementById("idtable").innerHTML = obj.result;
+        if(true) {//obj.result
+          window.location.href = 'aimJSP.jsp?id=' + id;
+        }
       }
     };
   }
   function jump() {
-    window.location.href = 'aimJSP.jsp?id='+id;
+
   }
 </script>
 </body>
