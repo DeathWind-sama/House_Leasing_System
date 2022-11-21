@@ -98,7 +98,6 @@ public class HouseServlet extends HttpServlet {
 
         House house=new House(ownerID,address,houseType,maxTenantsNum,monthlyRent);
 
-        //search
         ServiceToDaoInterface serviceToDaoInterface = new ServiceToDaoRealization();
         boolean isSuccess = serviceToDaoInterface.addHouse(house);
 
